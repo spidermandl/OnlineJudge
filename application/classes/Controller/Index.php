@@ -70,12 +70,12 @@ class Controller_Index extends Controller_Base
         //TODO: 3. add total submission status, total, tle, ac, re, etc.
         //TODO: 4. server status, system load, network...
         //TODO:
-        $this->template_data['title'] = 'HUST OJ STATUS';
+        $this->template_data['title'] = 'DES OJ STATUS';
     }
 
     public function action_about()
     {
-        $this->template_data['title'] = "About HUST OJ";
+        $this->template_data['title'] = "About DES OJ";
     }
 
     public function action_links()

@@ -27,7 +27,6 @@ class Controller_Admin_Problem extends Controller_Admin_Base {
             $problem = new Model_Problem;
         }
 
-
         if ( $this->request->is_post() )
         {
             $post = $this->cleaned_post();

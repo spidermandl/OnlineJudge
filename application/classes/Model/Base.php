@@ -114,7 +114,7 @@ abstract class Model_Base extends Model_Database implements ArrayAccess
         }
         
         $result = $query->as_object(get_called_class())->execute();
-
+        
         return $result->as_array();
     }
 

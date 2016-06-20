@@ -283,7 +283,7 @@ class e
      */
     public static function get_website_name()
     {
-        return e::get_base_config('name', 'HUSTOJ');
+        return e::get_base_config('name', 'DESOJ');
     }
 
     /**
@@ -293,7 +293,7 @@ class e
      */
     public static function get_website_team()
     {
-        return e::get_base_config('team', 'HUST ACMICPC TEAM');
+        return e::get_base_config('team', 'DESMOND TEAM');
     }
 
     /**

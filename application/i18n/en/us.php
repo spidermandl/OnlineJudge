@@ -31,7 +31,7 @@ return array(
     'footer.help'                                  => 'Help',
     'footer.terms'                                 => 'Terms of Service',
     'footer.copyright_:year_:team_reserved'        => 'Copyright &copy; :year :team. All rights reserved.',
-    'footer.power_by_:hustoj'                      => 'Powered by :hustoj Project.',
+    'footer.power_by_:hustoj'                      => 'Powered by :excellence Project.',
 
     'pager.newer'                                  => '&larr; Newer',
     'pager.older'                                  => 'Older &rarr;',

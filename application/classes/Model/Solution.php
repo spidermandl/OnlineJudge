@@ -277,6 +277,7 @@ class Model_Solution extends Model_Base
             ->param(':problem_id', $problem_id)
             ->param(':start', $start)
             ->param(':limit', $limit);
+        //var_dump($query);
 
         $result = $query->execute();
 
