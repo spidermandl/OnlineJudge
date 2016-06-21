@@ -106,13 +106,13 @@ void write_log(const char *fmt, ...) {
 
 }
 
-int after_equal(char * c) {
+int after_equal(char * c) { //获取 ‘=’ 后面的字符串
 	int i = 0;
 	for (; c[i] != '\0' && c[i] != '='; i++)
 		;
 	return ++i;
 }
-void trim(char * c) {
+void trim(char * c) { //剔除最后的空格字符
 	char buf[BUFFER_SIZE];
 	char * start, *end;
 	strcpy(buf, c);
@@ -125,8 +125,8 @@ void trim(char * c) {
 	*end = '\0';
 	strcpy(c, start);
 }
-bool read_buf(char * buf, const char * key, char * value) {
-	if (strncmp(buf, key, strlen(key)) == 0) {
+bool read_buf(char * buf, const char * key, char * value) {//读取 buf中 ‘=’ 后面的字符，存于value中
+	if (strncmp(buf, key, strlen(key)) == 0) {//str1, str2 为需要比较的两个字符串，n为要比较的字符的数目
 		strcpy(value, buf + after_equal(buf));
 		trim(value);
 		if (DEBUG)
@@ -154,10 +154,10 @@ void init_mysql_conf() {
 	sleep_time = 1;
 	oj_tot = 1;
 	oj_mod = 0;
-	strcpy(oj_lang_set, "0,1,2,3,4,5,6,7,8,9,10");
+	strcpy(oj_lang_set, "0,1,2,3,4,5,6,7,8,9,10");//把从src地址开始且含有'\0'结束符的字符串复制到以dest开始的地址空间。
 	fp = fopen("./etc/judge.conf", "r");
 	if (fp != NULL) {
-		while (fgets(buf, BUFFER_SIZE - 1, fp)) {
+		while (fgets(buf, BUFFER_SIZE - 1, fp)) {//从文件结构体指针stream中读取数据，每次读取一行
 			read_buf(buf, "OJ_HOST_NAME", host_name);
 			read_buf(buf, "OJ_USER_NAME", user_name);
 			read_buf(buf, "OJ_PASSWORD", password);
@@ -291,6 +291,7 @@ void login() {
 	}
 
 }
+//http 连接数据库
 int _get_jobs_http(int * jobs) {
 	login();
 	int ret = 0;
@@ -313,6 +314,8 @@ int _get_jobs_http(int * jobs) {
 	return ret;
 	return ret;
 }
+
+//连接本地数据库
 int _get_jobs_mysql(int * jobs) {
 	if (mysql_real_query(conn, query, strlen(query))) {
 		if (DEBUG)
@@ -449,15 +452,17 @@ int work() {
 	return retcnt;
 }
 
+//为文件加锁
 int lockfile(int fd) {
 	struct flock fl;
 	fl.l_type = F_WRLCK;
 	fl.l_start = 0;
-	fl.l_whence = SEEK_SET;
+	fl.l_whence = SEEK_SET;//以文件开头为锁定的起始位置
 	fl.l_len = 0;
 	return (fcntl(fd, F_SETLK, &fl));
 }
 
+//通过锁文件判读程序是否运行
 int already_running() {
 	int fd;
 	char buf[16];
@@ -485,20 +490,32 @@ int daemon_init(void)
 
 {
 	pid_t pid;
-
+    /**
+    fork函数将运行着的程序分成2个（几乎）完全一样的进程，
+    每个进程都启动一个从代码的同一位置开始执行的线程。
+    这两个进程中的线程继续执行，就像是两个用户同时启动了该应用程序的两个副本。
+    **/	
 	if ((pid = fork()) < 0)
 		return (-1);
 
-	else if (pid != 0)
+	else if (pid != 0)//若成功调用一次则返回两个值，子进程返回0，父进程返回子进程ID；否则，出错返回-1
 		exit(0); /* parent exit */
 
 	/* child continues */
 
 	setsid(); /* become session leader */
+	/**
+	当进程是会话的领头进程时setsid()调用失败并返回（-1）。
+	setsid()调用成功后，返回新的会话的ID，调用setsid函数的进程成为新的会话的领头进程，
+	并与其父进程的会话组和进程组脱离。由于会话对控制终端的独占性，进程同时与控制终端脱离。
+	*/
 
 	chdir(oj_home); /* change working directory */
 
 	umask(0); /* clear file mode creation mask */
+	/**
+	umask设置了用户创建文件的默认 权限，它与chmod的效果刚好相反，umask设置的是权限“补码”，而chmod设置的是文件权限码。
+	*/
 
 	close(0); /* close stdin */
 
@@ -516,7 +533,7 @@ int main(int argc, char** argv) {
 		strcpy(oj_home, argv[1]);
 	else
 		strcpy(oj_home, "/home/judge");
-	chdir(oj_home);    // change the dir
+	chdir(oj_home);    // change the dir 系统调用 同linux cd命令
 
 	sprintf(lock_file,"%s/etc/judge.pid",oj_home);
 	if (!DEBUG)
@@ -532,11 +549,16 @@ int main(int argc, char** argv) {
 //	final_sleep.tv_nsec=500000000;
 	init_mysql_conf();	// set the database info
 	signal(SIGQUIT, call_for_exit);
+	/**
+	signal()函数(它自己是带两个参数,一个为整型,一个为函数指针的函数), 
+	而这个signal()函数的返回值也为一个函数指针,这个函数指针指向一个带一个整型参数,
+	并且返回值为void的一个函数
+	*/
 	signal(SIGKILL, call_for_exit);
 	signal(SIGTERM, call_for_exit);
 	int j = 1;
 	while (1) {			// start to run
-		while (j && (http_judge || !init_mysql())) {
+		while (j && (http_judge || !init_mysql())) { //网络judge 或者是本地mysql judge
 
 			j = work();
 
