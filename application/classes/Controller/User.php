@@ -142,6 +142,7 @@ class Controller_User extends Controller_Base
     public function action_login()
     {
         if ( $this->get_current_user() ) {
+        var_dump("action login 2");
             $this->go_home();
         }
          $ss = Session::instance();
