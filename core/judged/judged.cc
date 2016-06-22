@@ -155,7 +155,7 @@ void init_mysql_conf() {
 	oj_tot = 1;
 	oj_mod = 0;
 	strcpy(oj_lang_set, "0,1,2,3,4,5,6,7,8,9,10");//把从src地址开始且含有'\0'结束符的字符串复制到以dest开始的地址空间。
-	fp = fopen("./etc/judge.conf", "r");
+	fp = fopen("../judge.conf", "r");
 	if (fp != NULL) {
 		while (fgets(buf, BUFFER_SIZE - 1, fp)) {//从文件结构体指针stream中读取数据，每次读取一行
 			read_buf(buf, "OJ_HOST_NAME", host_name);

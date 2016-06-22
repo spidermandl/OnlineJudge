@@ -6,7 +6,7 @@ base_url
 
 cookie domain
 
-
+tail -f /etc/httpd/log/error_log  //查看错误日志
 方法二选一
 1、下载安装程序
 debian/ubuntu用户:sudo apt-get update;sudo apt-get install subversion 
