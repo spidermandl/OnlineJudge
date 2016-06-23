@@ -19,6 +19,15 @@
  * You should have received a copy of the GNU General Public License
  * along with HUSTOJ. if not, see <http://www.gnu.org/licenses/>.
  */
+
+ /**
+ judged为服务进程，d即daemon。负责轮询数据库或web端，提取判题队列。
+ 当发现新任务时产生judge_client进程。
+
+ 特别的，judged可以多重启动，通过增加基准目录参数指定启动位置（默认/home/judge），从而确定judge.conf的位置，并确定其他参数。
+ 因此不但可以一个web服务器下挂多个判题服务器，也可以一台物理机器上同时启动任意多个相互独立的OJ系统
+ **/
+
 #include <time.h>
 #include <stdio.h>
 #include <string.h>
@@ -189,7 +198,7 @@ void run_client(int runid, int clientid) {
 	struct rlimit LIM;
 	LIM.rlim_max = 800;
 	LIM.rlim_cur = 800;
-	setrlimit(RLIMIT_CPU, &LIM);
+	setrlimit(RLIMIT_CPU, &LIM);// 控制系统资源的最大使用量
 
 	LIM.rlim_max = 80 * STD_MB;
 	LIM.rlim_cur = 80 * STD_MB;
@@ -220,8 +229,8 @@ void run_client(int runid, int clientid) {
 	//exit(0);
 }
 int executesql(const char * sql) {
-
 	if (mysql_real_query(conn, sql, strlen(sql))) {
+		//如果发生一个错误，函数返回非零
 		if (DEBUG)
 			write_log("%s", mysql_error(conn));
 		sleep(20);
@@ -233,13 +242,14 @@ int executesql(const char * sql) {
 
 int init_mysql() {
 	if (conn == NULL) {
-		conn = mysql_init(NULL);		// init the database connection
+		conn = mysql_init(NULL);		// init the database connection;mysql api
 		/* connect the database */
 		const char timeout = 30;
-		mysql_options(conn, MYSQL_OPT_CONNECT_TIMEOUT, &timeout);
+		mysql_options(conn, MYSQL_OPT_CONNECT_TIMEOUT, &timeout);//
 
 		if (!mysql_real_connect(conn, host_name, user_name, password, db_name,
 				port_number, 0, 0)) {
+				//如果连接成功，返回MYSQL*连接句柄。如果连接失败，返回NULL。对于成功的连接，返回值与第1个参数的值相同。
 			if (DEBUG)
 				write_log("%s", mysql_error(conn));
 			sleep(2);
@@ -316,6 +326,7 @@ int _get_jobs_http(int * jobs) {
 }
 
 //连接本地数据库
+//获取判题
 int _get_jobs_mysql(int * jobs) {
 	if (mysql_real_query(conn, query, strlen(query))) {
 		if (DEBUG)
@@ -386,7 +397,7 @@ int work() {
 	static pid_t ID[100];
 	static int workcnt = 0;
 	int runid = 0;
-	int jobs[max_running * 2 + 1];
+	int jobs[max_running * 2 + 1];//array of solution id
 	pid_t tmp_pid = 0;
 
 	//for(i=0;i<max_running;i++){
@@ -406,6 +417,7 @@ int work() {
 			write_log("Judging solution %d", runid);
 		if (workcnt >= max_running) {           // if no more client can running
 			tmp_pid = waitpid(-1, NULL, 0);     // wait 4 one child exit
+			//waitpid()会暂时停止目前进程的执行，直到有信号来到或子进程结束。
 			workcnt--;
 			retcnt++;
 			for (i = 0; i < max_running; i++)     // get the client id
