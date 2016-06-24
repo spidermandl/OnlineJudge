@@ -8,5 +8,6 @@ return array(
     'trusted_hosts' => array(
         'localhost',
         '127.0.0.1',
+        '112.124.38.1',
     ),
 );
