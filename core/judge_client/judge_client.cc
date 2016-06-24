@@ -24,7 +24,14 @@
  * You should have received a copy of the GNU General Public License
  * along with HUSTOJ. if not, see <http://www.gnu.org/licenses/>.
  */
+/**
+judge_client进程为实际判题程序，负责准备运行环境、数据，运行并监控目标程序的系统调用，采集运行指标，判断运行结果。
+当配置为启用抄袭检查时，judge_client将调用sim，判断相似性结果，并写回数据库或web端。
 
+sim为第三方应用程序，可进行语法分析判断文本相似度，通过检验的程序将由judge_client复制进题目数据的ac目录，成为新的参考样本。
+
+wget是linux下一个开源http客户端，提供了基于命令行的http交互功能
+**/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

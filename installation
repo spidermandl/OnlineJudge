@@ -82,7 +82,7 @@ Centos用户：
 尽管我们强烈推荐使用Debian/Ubuntu，但是由于驱动或资源的原因，有的用户不得不使用CentOS/RE/Federa。
 Through Debian/Ubuntu is highly recommended, but in case of server hardware drivers or something else, people like to install HUSTOJ on CentOS/RedHat/Federa system.
 这里是已知的一些问题。 Here is something for those users:
-yum install php httpd php-mysql mysql-server php-xml php-gd gcc-c++ php-mbstring glibc
+yum install php httpd php-mysql mysql-server php-xml php-gd gcc-c++ php-mbstring glibc mysql-devel
 默认web目录在/var/www/html，需要调整install.sh中的设置
 SELinux会影响PHP的运行，可能需要关闭(/etc/selinux/config and setenforce 0)才能web编辑测试数据。
 或者执行 chcon -R -t httpd_sys_content_t /home
