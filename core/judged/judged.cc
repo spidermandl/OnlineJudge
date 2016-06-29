@@ -580,9 +580,9 @@ int main(int argc, char** argv) {
 	int j = 1;
 	while (1) {			// start to run
 		while (j && (http_judge || !init_mysql())) { //网络judge 或者是本地mysql judge
-        printf("desmond dubug start\n");
+        //printf("desmond dubug start\n");
 			j = work();
-        printf("desmond dubug end\n");
+        //printf("desmond dubug end\n");
 
 		}
 		if(ONCE) break;
