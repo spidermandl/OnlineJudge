@@ -47,7 +47,6 @@ class Controller_Admin_Problem extends Controller_Admin_Base {
     public function action_defunct()
     {
         $pid = $this->get_query('problem_id');
-
         $problem = Model_Problem::find_by_id($pid);
 
         $ret = new JPackage();

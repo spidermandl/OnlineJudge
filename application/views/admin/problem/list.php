@@ -48,7 +48,7 @@
         var user_ok = confirm('<?php echo(__('admin.problem.list.sure_to_change_defunct?')); ?>');
         if (user_ok)
         {
-            var url = '/admin/problem/defunct'
+            var url = '/admin/problem/defunct';
             $.getJSON(url, {'problem_id': problem_id}, function(response){
                 console.log(response);
                 var elem = $('#defunct-' + problem_id);
