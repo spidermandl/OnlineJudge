@@ -161,7 +161,7 @@ class Controller_Admin_Problem extends Controller_Admin_Base {
         {
             $data_path = $problem->data_dir();
             $path = $data_path. '/'. $filename. '.'. $ext;
-            if( file_exists($path) and is_file($path) )
+ 	    if( file_exists($path) and is_file($path) )
             {
                 unlink($path);
             }
