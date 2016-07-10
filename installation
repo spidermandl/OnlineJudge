@@ -1,12 +1,84 @@
-mysqli
+web搭建注意事项：
 
-base_url
+config
+    --base.php ------------- 设置base_url,web工程在服务器的根路径
+    --url ------------加入服务器ip地址为trusted host
+          ------------domain, cookie domain 设置不对会引起cookie无法保存
+    --database.php ------------ 设置服务器type 为 mysqli
+.htaccess -------- 重定向，过滤url index.php后缀
 
-.htaccess
+数据库迁移 需要检查密码保存值
 
-cookie domain
+application/logs/ 查看kohana错误日志
+tail -f /etc/httpd/log/error_log //查看apache错误日志
 
-tail -f /etc/httpd/log/error_log  //查看错误日志
+配置Web界面
+cp -R web /var/www/html/JudgeOnline
+注册用户
+http://127.0.0.1/JudgeOnline/registerpage.php 注册一个普通帐号zhblue
+创建管理员
+insert into privilege(user_id,rightstr) values('zhblue','administrator'); zhblue 为需要加管理员权限的帐号
+管理员登录
+普通登录后访问http://127.0.0.1/JudgeOnline/admin
+
+您需要修改系统php.ini,给予php操作数据目录的权限。 以下是推荐修改的设置
+       sudo gedit /etc/php5/apache2/php.ini 
+       open_basedir =/home/judge/data:/var/www/JudgeOnline:/tmp  
+       max_execution_time = 300     ; Maximum execution time of each script, in seconds
+       max_input_time = 600 
+       memory_limit = 256M      ; Maximum amount of memory a script may consume (16MB)
+       post_max_size = 64M
+       upload_tmp_dir =/tmp
+       upload_max_filesize = 64M
+      
+修改php.ini后apache需重启
+
+/*********************************************************************************************************/
+/*********************************************************************************************************/
+/*********************************************************************************************************/
+后台judge进程搭建注意事项：
+1、yum install php httpd php-mysql mysql-server php-xml php-gd gcc-c++ php-mbstring glibc mysql-devel glibc-devel glibc-static
+
+2、 创建judge进程工作目录 /home/judge
+    mkdir /project-root/etc
+    mkdir /project-root/data
+    mkdir /project-root/log
+
+    ln -s /project-root/etc  /home/judge/etc
+    ln -s /project-root/data  /home/judge/data
+    ln -s /project-root/log  /home/judge/log
+    
+    cd /project-root/core/
+    sudo ./make.sh
+
+3、 c、c++编译错误 ld permission denied 打开文件失败 写入失败等问题，
+    修改文件访问权限，及其父路径权限
+    查看生成可执行文件是否 sudo
+
+4、java判题运行需要安装jdk，下载linux下jdk-8u91-linux-x64.rpm，并用rpm命令进行安装
+
+5、判题配置文件
+########################/home/judge/etc/judge.conf###########################
+        OJ_HOST_NAME=localhost    #数据库地址
+        OJ_USER_NAME=jol #数据库用户名
+        OJ_PASSWORD=# 数据库密码
+        OJ_DB_NAME=jol #数据库名
+        OJ_PORT_NUMBER=3306 #数据库端口
+        OJ_RUNNING=1 #可以同时运行几个进程
+        OJ_SLEEP_TIME=1 #如果有空闲 要休眠多久
+        OJ_TOTAL=1 #总共有多少台机器负责判题
+        OJ_MOD=0 #当前机器评判取模为多少的提交
+########################/home/judge/etc/judge.conf###########################
+
+6、判题测试设置规则
+   放入 /project-root/data 中，判题目录名为problem id 里面放入测试用例文件：
+   输入文件 input%d.in
+   输出文件 output%d.out
+
+
+
+
+
 方法二选一
 1、下载安装程序
 debian/ubuntu用户:sudo apt-get update;sudo apt-get install subversion 
@@ -82,7 +154,7 @@ Centos用户：
 尽管我们强烈推荐使用Debian/Ubuntu，但是由于驱动或资源的原因，有的用户不得不使用CentOS/RE/Federa。
 Through Debian/Ubuntu is highly recommended, but in case of server hardware drivers or something else, people like to install HUSTOJ on CentOS/RedHat/Federa system.
 这里是已知的一些问题。 Here is something for those users:
-yum install php httpd php-mysql mysql-server php-xml php-gd gcc-c++ php-mbstring glibc mysql-devel
+yum install php httpd php-mysql mysql-server php-xml php-gd gcc-c++ php-mbstring glibc mysql-devel glibc-devel glibc-static
 默认web目录在/var/www/html，需要调整install.sh中的设置
 SELinux会影响PHP的运行，可能需要关闭(/etc/selinux/config and setenforce 0)才能web编辑测试数据。
 或者执行 chcon -R -t httpd_sys_content_t /home
@@ -106,7 +178,7 @@ register_globals=Off
 open_basedir=/var/www/html:/var/www/html/JudgeOnline:/tmp:/home/judge/data
 change makefiles in core/judged and core/judge_client
 change -L/usr/local/mysql/lib/mysql to -L/usr/lib/mysql
--I/usr/local/mysql/include/mysql to -I/usr/include/mysql
+-I/usr/local/mysql/include/mysql to -I/usr/include/mysqlins
 for English user ,email or issue is recommended for Chinese user ,QQ-qun group IM is recomended.
 刚刚在全新的CentOS 5.6中安装了OJ，主要遇到问题和解决方法如下：
 安装时候提示找不到www-data用户，修改web的用户为apache

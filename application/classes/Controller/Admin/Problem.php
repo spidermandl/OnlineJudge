@@ -44,10 +44,14 @@ class Controller_Admin_Problem extends Controller_Admin_Base {
         $this->template_data['problem'] = $problem;
     }
 
-    public function action_defunct()
+    public function action_defunct($pid = null)
     {
-        $pid = $this->get_query('problem_id');
+        if ( ! $pid )
+            $pid = $this->request->param('id', null);
 
+        if (! $pid )
+            $pid = $this->get_query('problem_id');
+        
         $problem = Model_Problem::find_by_id($pid);
 
         $ret = new JPackage();

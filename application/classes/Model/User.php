@@ -239,14 +239,13 @@ class Model_User extends Model_Base
         // new style password
         $origin_hash = base64_decode($this->password);
         $salt = substr($origin_hash, 20);
-
+        
         $hashed_password = Auth::instance()->hash($password, $salt);
 
         if ( $log_to_database )
         {
             $this->log_login($this->user_id, $hashed_password);
         }
-
         return $this->password == $hashed_password;
     }
 

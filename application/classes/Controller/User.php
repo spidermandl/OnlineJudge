@@ -11,10 +11,11 @@ class Controller_User extends Controller_Base
         $orderby = array(
             'solved' => Model_Base::ORDER_DESC,
         );
+
         $filter = array();
         // user order by resolved problems
         $users = Model_User::find($filter, $page, OJ::per_page, $orderby);
-
+        
         // views
         $total = Model_User::count($filter);
         $this->template_data['title'] = __('user.list.user_rank');
@@ -59,7 +60,7 @@ class Controller_User extends Controller_Base
 
     public function action_edit()
     {
-        var_dump("edit 1");
+        //var_dump("edit 1");
         $user = $this->check_login();
         if ( $this->request->is_post() ) {
             $safe_data = $this->cleaned_post();

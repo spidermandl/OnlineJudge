@@ -1773,6 +1773,9 @@ void clean_session(pid_t p) {
 	execute_cmd("ps aux |grep \\^judge|awk '{print $2}'|xargs kill");
 }
 
+/**
+检查内存使用情况，程序执行时间
+*/
 void watch_solution(pid_t pidApp, char * infile, int & ACflg, int isspj,
 		char * userfile, char * outfile, int solution_id, int lang,
 		int & topmemory, int mem_lmt, int & usedtime, int time_lmt, int & p_id,
@@ -2006,6 +2009,10 @@ int get_sim(int solution_id, int lang, int pid, int &sim_s_id) {
 		sim = 0;
 	return sim;
 }
+
+/**
+设置文件ln
+*/
 void mk_shm_workdir(char * work_dir) {
 	char shm_path[BUFFER_SIZE];
 	sprintf(shm_path, "/dev/shm/hustoj/%s", work_dir);
@@ -2124,7 +2131,7 @@ int main(int argc, char** argv) {
 	}
 	//set work directory to start running & judging
 	sprintf(work_dir, "%s/run%s/", oj_home, argv[2]);
-
+    
 	if (shm_run)
 		mk_shm_workdir(work_dir);
 

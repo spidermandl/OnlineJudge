@@ -176,7 +176,7 @@ public class Main{
         </div>
     </dd>
     <dt>
-        Any questions/suggestions please post to <a target="_blank" href="http://algorithm.byhh.net/">Algorithm@BYHH</a>, or post at our <a href="<?php e::url('/discuss');?>">FORUM</a>.
+        Any questions/suggestions please post to <a target="_blank" href="http://desmond.stju.net/">Desmond@stju</a>, or post at our <a href="<?php e::url('/discuss');?>">FORUM</a>.
     </dt>
 </dl>
 
