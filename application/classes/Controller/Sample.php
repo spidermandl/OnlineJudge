@@ -4,10 +4,8 @@ class Controller_Sample extends Controller_Base {
 
 	public function action_index()
 	{
-        var_dump(Session::$default);
         $session = Session::instance();
         //$session->set("Desmond","33");
-        var_dump($session->get("Desmond","22"));
 
         if ( $this->get_current_user() ) {
             $this->go_home();
@@ -49,7 +47,6 @@ class Controller_Sample extends Controller_Base {
             // go back url
             $ss = Session::instance();
             $url = $ss->get_once('return_url');
-            var_dump($url);
             if ( ! $url )
             {
                 $this->go_home();

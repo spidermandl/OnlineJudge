@@ -8,7 +8,6 @@ class Controller_Index extends Controller_Base
         //$session = Session::instance();
         //$session->set("Desmond", '22');
         //$data = $session->get("Desmond");
-        //var_dump($data);
 
 
         $page = $this->get_query('page', 1);

@@ -60,7 +60,6 @@ class Controller_User extends Controller_Base
 
     public function action_edit()
     {
-        //var_dump("edit 1");
         $user = $this->check_login();
         if ( $this->request->is_post() ) {
             $safe_data = $this->cleaned_post();
@@ -143,7 +142,6 @@ class Controller_User extends Controller_Base
     public function action_login()
     {
         if ( $this->get_current_user() ) {
-        var_dump("action login 2");
             $this->go_home();
         }
          $ss = Session::instance();
