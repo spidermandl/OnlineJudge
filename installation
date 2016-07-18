@@ -1,4 +1,7 @@
 web搭建注意事项：
+安装软件
+yum install php httpd php-mysql mysql-server php-xml php-gd gcc-c++ php-mbstring glibc mysql-devel glibc-devel glibc-static httpd-devel
+
 
 config
     --base.php ------------- 设置base_url,web工程在服务器的根路径
@@ -10,7 +13,19 @@ config
 数据库迁移 需要检查密码保存值
 
 application/logs/ 查看kohana错误日志
-tail -f /etc/httpd/log/error_log //查看apache错误日志
+tail -f /etc/httpd/logs/error_log //查看apache错误日志
+
+开启apache访问
+apachectl start --开启apache服务
+/etc/init.d/iptables stop --关闭防火墙
+
+vim /etc/httpd/conf/httpd.conf  找到  DocumentRoot "/var/www/html" 修改为：DocumentRoot "/home"
+再加入 <Directory “/home”>设置
+chmod o+x /home
+
+开启mysql
+service mysqld start
+
 
 配置Web界面
 cp -R web /var/www/html/JudgeOnline
@@ -33,13 +48,55 @@ insert into privilege(user_id,rightstr) values('zhblue','administrator'); zhblue
       
 修改php.ini后apache需重启
 
+
+安装php扩展fastcgi
+sudo rpm --import http://dag.wieers.com/rpm/packages/RPM-GPG-KEY.dag.txt
+sudo rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
+sudo yum install mod_fastcgi
+# vim /etc/httpd/conf/httpd.conf
+找到LoadModule部分，添加一行加载语句
+...
+LoadModule fastcgi_module modules/mod_fastcgi.so
+...
+
+重启服务： # /etc/init.d/httpd restart
+
+如果能正常启动，则log里面将显示以下信息 
+# grep -i "FastCGI" /var/log/httpd/error_log
+
+[Mon Jul 29 06:54:27 2013] [notice] FastCGI: process manager initialized (pid 2098) 
+[Mon Jul 29 06:54:27 2013] [notice] Apache/2.2.15 (Unix) DAV/2 mod_fastcgi/2.4.6 configured -- resuming normal operations 
+
+安装FPM（FastCGI进程管理器）FPM（FastCGI 进程管理器）用于替换 PHP FastCGI 的大部分附加功能，对于高负载网站是非常有用的。
+# yum install php-fpm
+# /etc/init.d/php-fpm start
+# chkconfig php-fpm on
+# netstat -anp |grep php
+tcp        0      0 127.0.0.1:9000              0.0.0.0:*                   LISTEN      2575/php-fpm        
+unix  3      [ ]         STREAM     CONNECTED     25812  2575/php-fpm        
+unix  3      [ ]         STREAM     CONNECTED     25811  2575/php-fpm        
+
+修改配置，新建一个配置文件/etc/httpd/conf.d/fastcgi.php.conf
+
+DirectoryIndex index.html index.shtml index.cgi index.php
+AddHandler php5-fcgi .php
+Action php5-fcgi /php5-fcgi
+Alias /php5-fcgi /var/www/cgi-bin/php5-fcgi
+FastCgiExternalServer /var/www/cgi-bin/php5-fcgi -idle-timeout 60 -host 127.0.0.1:9000 -pass-header Authorization
+
+重启Apache和FPM： 
+# service httpd restart 
+# service php-fpm restart 
+
+测试phpinfo()页面，配置成功则显示为： 
+... 
+Server API        FPM/FastCGI 
+...
 /*********************************************************************************************************/
 /*********************************************************************************************************/
 /*********************************************************************************************************/
 后台judge进程搭建注意事项：
-1、yum install php httpd php-mysql mysql-server php-xml php-gd gcc-c++ php-mbstring glibc mysql-devel glibc-devel glibc-static
-
-2、 创建judge进程工作目录 /home/judge
+1、 创建judge进程工作目录 /home/judge
     mkdir /project-root/etc
     mkdir /project-root/data
     mkdir /project-root/log
@@ -51,13 +108,13 @@ insert into privilege(user_id,rightstr) values('zhblue','administrator'); zhblue
     cd /project-root/core/
     sudo ./make.sh
 
-3、 c、c++编译错误 ld permission denied 打开文件失败 写入失败等问题，
+2、 c、c++编译错误 ld permission denied 打开文件失败 写入失败等问题，
     修改文件访问权限，及其父路径权限
     查看生成可执行文件是否 sudo
 
-4、java判题运行需要安装jdk，下载linux下jdk-8u91-linux-x64.rpm，并用rpm命令进行安装
+3、java判题运行需要安装jdk，下载linux下jdk-8u91-linux-x64.rpm，并用rpm命令进行安装
 
-5、判题配置文件
+4、判题配置文件
 ########################/home/judge/etc/judge.conf###########################
         OJ_HOST_NAME=localhost    #数据库地址
         OJ_USER_NAME=jol #数据库用户名
@@ -70,7 +127,7 @@ insert into privilege(user_id,rightstr) values('zhblue','administrator'); zhblue
         OJ_MOD=0 #当前机器评判取模为多少的提交
 ########################/home/judge/etc/judge.conf###########################
 
-6、判题测试设置规则
+5、判题测试设置规则
    放入 /project-root/data 中，判题目录名为problem id 里面放入测试用例文件：
    输入文件 input%d.in
    输出文件 output%d.out

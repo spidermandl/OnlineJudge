@@ -6,7 +6,7 @@
  */
 
 return array(
-    'name'                => 'HUSTOJ',
+    'name'                => 'SJTUOJ',
     'team'                => 'DESMOND TEAM',
     'desc'                => 'DESMOND ACM组织',
     'keyword'             => 'DESMOND, spidermandl, online judge, 计算机竞赛, 编程',
