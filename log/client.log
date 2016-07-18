@@ -1045,3 +1045,532 @@ init_call_counter:1
 init_call_counter:1
 result=4
 <<1done!>>
+Judging solution 1034
+<<=sid=1034===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+result=6
+<<1done!>>
+Judging solution 1034
+<<=sid=1034===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=10
+<<1done!>>
+Judging solution 1034
+<<=sid=1034===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+Judging solution 1034
+<<=sid=1034===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+Judging solution 1035
+<<=sid=1035===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+Judging solution 1036
+<<=sid=1036===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=10
+<<1done!>>
+Judging solution 1036
+<<=sid=1036===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+[ERROR] A Not allowed system call: runid:1036 CALLID:20
+ TO FIX THIS , ask admin to add the CALLID into corresponding LANG_XXV[] located at okcalls32/64.h ,
+and recompile judge_client. 
+if you are admin and you don't know what to do ,
+ tech support can be found on http://hustoj.taobao.com
+
+result=10
+<<1done!>>
+Judging solution 1035
+<<=sid=1035===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+Judging solution 1036
+<<=sid=1036===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+[ERROR] A Not allowed system call: runid:1036 CALLID:20
+ TO FIX THIS , ask admin to add the CALLID into corresponding LANG_XXV[] located at okcalls32/64.h ,
+and recompile judge_client. 
+if you are admin and you don't know what to do ,
+ tech support can be found on http://hustoj.taobao.com
+
+result=10
+<<1done!>>
+Judging solution 1037
+<<=sid=1037===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=7
+<<1done!>>
+Judging solution 1037
+<<=sid=1037===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=7
+<<1done!>>
+Judging solution 1038
+<<=sid=1038===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=6
+<<1done!>>
+Judging solution 1037
+<<=sid=1037===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=7
+<<1done!>>
+Judging solution 1038
+<<=sid=1038===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+Judging solution 1038
+<<=sid=1038===clientid=0==>>
+
+init_call_counter:1
+Judging solution 1038
+<<=sid=1038===clientid=0==>>
+
+init_call_counter:1
+result=7
+<<1done!>>
+Judging solution 1038
+<<=sid=1038===clientid=0==>>
+
+init_call_counter:1
+result=7
+<<1done!>>
+Judging solution 1038
+<<=sid=1038===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+Judging solution 1038
+<<=sid=1038===clientid=0==>>
+
+init_call_counter:1
+result=6
+<<1done!>>
+Judging solution 1038
+<<=sid=1038===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+Judging solution 1039
+<<=sid=1039===clientid=0==>>
+
+init_call_counter:1
+result=7
+<<1done!>>
+Judging solution 1040
+<<=sid=1040===clientid=0==>>
+
+init_call_counter:1
+result=6
+<<1done!>>
+Judging solution 1040
+<<=sid=1040===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=10
+<<1done!>>
+Judging solution 1040
+<<=sid=1040===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=10
+<<1done!>>
+Judging solution 1041
+<<=sid=1041===clientid=0==>>
+
+init_call_counter:1
+result=7
+<<1done!>>
+Judging solution 1038
+<<=sid=1038===clientid=0==>>
+
+init_call_counter:1
+result=6
+<<1done!>>
+Judging solution 1039
+<<=sid=1039===clientid=0==>>
+
+init_call_counter:1
+Judging solution 1040
+<<=sid=1040===clientid=1==>>
+
+init_call_counter:1
+Judging solution 1041
+<<=sid=1041===clientid=2==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+result=7
+<<1done!>>
+result=7
+<<1done!>>
+Judging solution 1036
+<<=sid=1036===clientid=0==>>
+
+init_call_counter:1
+result=6
+<<1done!>>
+Judging solution 1037
+<<=sid=1037===clientid=0==>>
+
+init_call_counter:1
+result=6
+<<1done!>>
+Judging solution 1039
+<<=sid=1039===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+Judging solution 1040
+<<=sid=1040===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+Judging solution 1038
+<<=sid=1038===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+Judging solution 1037
+<<=sid=1037===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+Judging solution 1036
+<<=sid=1036===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+Judging solution 1039
+<<=sid=1039===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=6
+<<1done!>>
+Judging solution 1039
+<<=sid=1039===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+Judging solution 1038
+<<=sid=1038===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+Judging solution 1037
+<<=sid=1037===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+Judging solution 1040
+<<=sid=1040===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+Judging solution 1042
+<<=sid=1042===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+Judging solution 1042
+<<=sid=1042===clientid=0==>>
+
+init_call_counter:1
+result=9
+<<1done!>>
+Judging solution 1042
+<<=sid=1042===clientid=0==>>
+
+init_call_counter:1
+result=6
+<<1done!>>
+Judging solution 1042
+<<=sid=1042===clientid=0==>>
+
+init_call_counter:1
+result=9
+<<1done!>>
+Judging solution 1042
+<<=sid=1042===clientid=0==>>
+
+init_call_counter:1
+result=6
+<<1done!>>
+Judging solution 1042
+<<=sid=1042===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
+Judging solution 1042
+<<=sid=1042===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=6
+<<1done!>>
+Judging solution 1042
+<<=sid=1042===clientid=0==>>
+
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+init_call_counter:1
+result=4
+<<1done!>>
