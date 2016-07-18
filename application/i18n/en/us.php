@@ -230,6 +230,7 @@ return array(
     'admin.index.sidebar.home'                     => 'Home',
     'admin.index.index.dashboard'                  => 'Dashboard',
     'admin.index.index.rejudge'                    => 'Rejudge',
+    'admin.index.index.rescore'                    => 'Rescore',
     'admin.index.index.choose_type'                => 'Type',
     'admin.index.index.problem'                    => 'Problem',
     'admin.index.index.runid'                      => 'Run ID',

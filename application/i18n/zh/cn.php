@@ -229,6 +229,7 @@ return array(
     'admin.index.sidebar.home'                              => '首页',
     'admin.index.index.dashboard'                           => '总览',
     'admin.index.index.rejudge'                             => '重测',
+    'admin.index.index.rejudge'                             => '重算分',
     'admin.index.index.choose_type'                         => '类型',
     'admin.index.index.problem'                             => '题目',
     'admin.index.index.runid'                               => '运行号',
