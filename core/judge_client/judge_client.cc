@@ -472,6 +472,7 @@ int compare_zoj(const char *file1, const char *file2) {
 		fclose(f1);
 	if (f2)
 		fclose(f2);
+        printf("compare zoj result %d\n",ret);
 	return ret;
 }
 
@@ -921,10 +922,11 @@ int compile(int lang) {
 		} else {
 			freopen("ce.txt", "w", stdout);
 		}
-		execute_cmd("chown judge *");
+		//execute_cmd("chown judge *");
+                execute_cmd("chmod -R 777 *");
 		while(setgid(1536)!=0) sleep(1);
-        while(setuid(1536)!=0) sleep(1);
-        while(setresuid(1536, 1536, 1536)!=0) sleep(1);
+        	while(setuid(1536)!=0) sleep(1);
+        	while(setresuid(1536, 1536, 1536)!=0) sleep(1);
 
 		switch (lang) {
 		case 0:
@@ -985,7 +987,6 @@ int compile(int lang) {
 		exit(0);
 	} else {
 		int status = 0;
-
 		waitpid(pid, &status, 0);
 		if (lang > 3 && lang < 7)
 			status = get_file_size("ce.txt");
@@ -1058,7 +1059,7 @@ void _get_solution_mysql(int solution_id, char * work_dir, int lang) {
 	// create the src file
 	sprintf(src_pth, "Main.%s", lang_ext[lang]);
 	if (DEBUG)
-		printf("Main=%s", src_pth);
+		printf("Main=%s\n", src_pth);
 	FILE *fp_src = fopen(src_pth, "we");
 	fprintf(fp_src, "%s", row[0]);
 	mysql_free_result(res);
@@ -1070,7 +1071,7 @@ void _get_solution_http(int solution_id, char * work_dir, int lang) {
 	// create the src file
 	sprintf(src_pth, "Main.%s", lang_ext[lang]);
 	if (DEBUG)
-		printf("Main=%s", src_pth);
+		printf("Main=%s\n", src_pth);
 
 	//login();
 
@@ -2015,14 +2016,17 @@ int get_sim(int solution_id, int lang, int pid, int &sim_s_id) {
 */
 void mk_shm_workdir(char * work_dir) {
 	char shm_path[BUFFER_SIZE];
-	sprintf(shm_path, "/dev/shm/hustoj/%s", work_dir);
+	//sprintf(shm_path, "/dev/shm/hustoj/%s", work_dir);
+	sprintf(shm_path, "/home/judge/hustoj/%s", work_dir);
 	execute_cmd("/bin/mkdir -p %s", shm_path);
 	execute_cmd("/bin/rm -rf %s", work_dir);
 	execute_cmd("/bin/ln -s %s %s/", shm_path, oj_home);
 	execute_cmd("/bin/chown judge %s ", shm_path);
 	execute_cmd("chmod 755 %s ", shm_path);
+        execute_cmd("chmod -R 777 %s",work_dir);
 	//sim need a soft link in shm_dir to work correctly
-	sprintf(shm_path, "/dev/shm/hustoj/%s/", oj_home);
+	//sprintf(shm_path, "/dev/shm/hustoj/%s/", oj_home);
+	sprintf(shm_path, "/home/judge/hustoj/%s", oj_home);
 	execute_cmd("/bin/ln -s %s/data %s", oj_home, shm_path);
 
 }
@@ -2284,12 +2288,11 @@ int main(int argc, char** argv) {
 	for (; (oi_mode || ACflg == OJ_AC|| ACflg == OJ_PE) && (dirp = readdir(dp)) != NULL;) {
 
 		namelen = isInFile(dirp->d_name); // check if the file is *.in or not
-		if (namelen == 0)
+                if (namelen == 0)
 			continue;
 
 		if(http_judge&&(!data_list_has(dirp->d_name))) 
 			continue;
-	
 		prepare_files(dirp->d_name, namelen, infile, p_id, work_dir, outfile,
 				userfile, runner_id);
 		init_syscalls_limits(lang);

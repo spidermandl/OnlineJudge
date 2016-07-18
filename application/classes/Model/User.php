@@ -81,12 +81,10 @@ class Model_User extends Model_Base
     public static function authenticate($username, $password)
     {
         $user = self::find_by_id($username);
-
         if ($user and $user->check_password($password, true))
         {
             return $user;
         }
-
         return false;
     }
 
@@ -239,7 +237,10 @@ class Model_User extends Model_Base
         // new style password
         $origin_hash = base64_decode($this->password);
         $salt = substr($origin_hash, 20);
+<<<<<<< HEAD
         
+=======
+>>>>>>> c8deb58d2062f6874b594041e408e9f4dafe685e
         $hashed_password = Auth::instance()->hash($password, $salt);
 
         if ( $log_to_database )

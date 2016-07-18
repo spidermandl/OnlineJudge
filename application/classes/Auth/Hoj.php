@@ -115,9 +115,13 @@ class Auth_Hoj extends Kohana_Auth
             //var_dump($user);
             if ( $user )
             {
+               // var_dump($user->user_id);
                 $this->current_user = Model_User::find_by_username($user->user_id);
+            }else{
+                //var_dump('no user');
             }
         }
+        //var_dump($this->current_user);
         return $this->current_user;
     }
 }

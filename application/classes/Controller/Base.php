@@ -23,7 +23,7 @@ class Controller_Base extends Controller
     protected function init()
     {
         $this->view = strtolower($this->request->controller()). '/'. $this->request->action();
-        //var_dump(strtolower($this->request->controller()). '/'. $this->request->action());
+        // var_dump(strtolower($this->request->controller()). '/'. $this->request->action());
     }
 
     /**

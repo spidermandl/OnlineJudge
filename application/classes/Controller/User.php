@@ -143,6 +143,7 @@ class Controller_User extends Controller_Base
     public function action_login()
     {
         if ( $this->get_current_user() ) {
+        var_dump("action login 2");
             $this->go_home();
         }
          $ss = Session::instance();
@@ -175,9 +176,9 @@ class Controller_User extends Controller_Base
             $url = $ss->get_once('return_url');
             if ( ! $url )
             {
-                $this->go_home();
+               $this->go_home();
             } else {
-                $this->redirect($url);
+               $this->redirect($url);
             }
         }
     }
@@ -226,7 +227,7 @@ class Controller_User extends Controller_Base
     public function action_logout()
     {
         Auth::instance()->logout();
-
+        
         $this->go_home();
     }
 

@@ -164,7 +164,9 @@ void init_mysql_conf() {
 	oj_tot = 1;
 	oj_mod = 0;
 	strcpy(oj_lang_set, "0,1,2,3,4,5,6,7,8,9,10");//把从src地址开始且含有'\0'结束符的字符串复制到以dest开始的地址空间。
-	fp = fopen("../judge.conf", "r");
+	char config[4096];
+        sprintf(config, "%s/etc/judge.conf", oj_home);
+	fp = fopen(config, "r");
 	if (fp != NULL) {
 		while (fgets(buf, BUFFER_SIZE - 1, fp)) {//从文件结构体指针stream中读取数据，每次读取一行
 			read_buf(buf, "OJ_HOST_NAME", host_name);
@@ -476,15 +478,18 @@ int lockfile(int fd) {
 
 //通过锁文件判读程序是否运行
 int already_running() {
+printf("already running %s\n",lock_file);
 	int fd;
 	char buf[16];
 	fd = open(lock_file, O_RDWR | O_CREAT, LOCKMODE);
 	if (fd < 0) {
+printf("already running 1\n");
 		syslog(LOG_ERR | LOG_DAEMON, "can't open %s: %s", LOCKFILE,
 				strerror(errno));
 		exit(1);
 	}
 	if (lockfile(fd) < 0) {
+printf("already running 3\n");
 		if (errno == EACCES || errno == EAGAIN) {
 			close(fd);
 			return 1;
@@ -506,12 +511,15 @@ int daemon_init(void)
     fork函数将运行着的程序分成2个（几乎）完全一样的进程，
     每个进程都启动一个从代码的同一位置开始执行的线程。
     这两个进程中的线程继续执行，就像是两个用户同时启动了该应用程序的两个副本。
-    **/	
-	if ((pid = fork()) < 0)
-		return (-1);
-
-	else if (pid != 0)//若成功调用一次则返回两个值，子进程返回0，父进程返回子进程ID；否则，出错返回-1
+    **/
+printf("desmond daemon init\n");
+	if ((pid = fork()) < 0){
+	return (-1);
+	}
+	else if (pid != 0){//若成功调用一次则返回两个值，子进程返回0，父进程返回子进程ID；否则，出错返回-1
+printf("%d child process\n",pid);
 		exit(0); /* parent exit */
+	}
 
 	/* child continues */
 
@@ -544,12 +552,13 @@ int main(int argc, char** argv) {
 	if (argc > 1)
 		strcpy(oj_home, argv[1]);
 	else
-		strcpy(oj_home, "/home/judge");
+		strcpy(oj_home, "/home/OnlineJudge");
 	chdir(oj_home);    // change the dir 系统调用 同linux cd命令
-
+     
 	sprintf(lock_file,"%s/etc/judge.pid",oj_home);
-	if (!DEBUG)
+	if (!DEBUG){
 		daemon_init();
+	}
 	if ( already_running()) {
 		syslog(LOG_ERR | LOG_DAEMON,
 				"This daemon program is already running!\n");
@@ -571,8 +580,9 @@ int main(int argc, char** argv) {
 	int j = 1;
 	while (1) {			// start to run
 		while (j && (http_judge || !init_mysql())) { //网络judge 或者是本地mysql judge
-
+        //printf("desmond dubug start\n");
 			j = work();
+        //printf("desmond dubug end\n");
 
 		}
 		if(ONCE) break;

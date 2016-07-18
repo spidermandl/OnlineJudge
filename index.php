@@ -105,7 +105,6 @@ $response = $request->execute();
 //         ->body();
 
 $http_code = $response->status();
-
 if ( $http_code != 200 AND $http_code != 302 )
 {
     if (Kohana::$environment !== Kohana::DEVELOPMENT)
