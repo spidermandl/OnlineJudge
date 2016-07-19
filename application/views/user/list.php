@@ -7,6 +7,7 @@
 		<th><?php echo(__('user.list.solved')); ?></th>
 		<th><?php echo(__('user.list.submit')); ?></th>
 		<th><?php echo(__('user.list.ratio')); ?></th>
+		<th><?php echo(__('user.list.score')); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -20,6 +21,7 @@
         <td><?php echo($u->solved); ?></td>
         <td><?php echo($u->submit); ?></td>
         <td><?php echo($u->ratio_of_accept()) ?></td>
+        <td><?php echo($u->score); ?></td>
     </tr>
 <?php endforeach; ?>
 </tbody>

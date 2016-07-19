@@ -24,4 +24,16 @@
         </div>
     </fieldset>
     </form>
+
+
+    <form role="form" action="<?php e::url('/admin/index/rescore');?>" method="post" class="form-horizontal col-sm-4">
+    <fieldset>
+        <legend><?php echo(__('admin.index.index.rescore')); ?></legend>
+        <div class="form-group">
+            <div class="col-sm-offset-6 col-sm-8">
+                <button type="submit" class="btn btn-primary"><?php echo(__('admin.index.index.submit')); ?></button>
+            </div>
+        </div>
+    </fieldset>
+    </form>
 </div>

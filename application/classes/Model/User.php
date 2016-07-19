@@ -22,6 +22,7 @@ class Model_User extends Model_Base
         'school',
         'locale',
         'theme',
+        'score',
     );
 
     static $primary_key = 'user_id';
@@ -43,6 +44,7 @@ class Model_User extends Model_Base
     public $school;
     public $locale;
     public $theme;
+    public $score;
 
     /* @var Model_Privilege[] $permission_list */
     protected $permission_list = null;
@@ -87,6 +89,17 @@ class Model_User extends Model_Base
         }
         return false;
     }
+    /**
+     *
+     *  get all users class
+     *  @return all users
+     */
+    public static function get_all_users(){
+        $query = DB::select()->from(static::$table);
+        $result = $query->as_object(get_called_class())->execute();
+        
+        return $result->as_array();
+    }
 
     /**
      * get time of last user submission
@@ -126,6 +139,11 @@ class Model_User extends Model_Base
     public function number_of_solution_accept()
     {
         return Model_Solution::number_of_solution_accept_for_user($this->user_id);
+    }
+    
+    public function ids_of_problem_accept()
+    {
+        return  Model_Solution::ids_of_problem_accept_for_user($this->user_id);
     }
 
     public function number_of_solution_failed()
@@ -373,6 +391,7 @@ class Model_User extends Model_Base
 	    $this->locale      = I18n::default_language();
         $this->ip          = Request::$client_ip;
         $this->defunct     = self::DEFUNCT_NO;
+        $this->score       = 0;
     }
 
     /**

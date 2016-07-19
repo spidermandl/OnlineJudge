@@ -178,6 +178,18 @@ class Model_Solution extends Model_Base
 
         return $result['total'];
     }
+    
+    public static function ids_of_problem_accept_for_user($user_id)
+    {
+        $query = DB::select(DB::expr('DISTINCT problem_id'))->from(self::$table)
+            ->where('user_id', '=', $user_id)
+            ->where('result', '=', self::STATUS_AC);
+
+        $result = $query->as_object(get_called_class())->execute();
+
+        return $result->as_array();
+    }
+
     public static function number_of_solution_accept_for_user($user_id)
     {
         $query = DB::select(DB::expr('count(solution_id) as total'))->from(self::$table)

@@ -118,6 +118,7 @@ return array(
     'user.list.solved'                             => 'Solved',
     'user.list.submit'                             => 'Submit',
     'user.list.ratio'                              => 'Ratio',
+    'user.list.score'                              => 'Score',
     'user.list.prev'                               => 'Previous',
     'user.list.next'                               => 'Next',
     'user.list.top'                                => 'Top',

@@ -9,7 +9,8 @@ class Controller_User extends Controller_Base
         $page = $this->request->param('id', 1);
 
         $orderby = array(
-            'solved' => Model_Base::ORDER_DESC,
+            //'solved' => Model_Base::ORDER_DESC,
+            'score' => Model_Base::ORDER_DESC,
         );
 
         $filter = array();

@@ -117,6 +117,7 @@ return array(
     'user.list.solved'                                      => '解决',
     'user.list.submit'                                      => '提交',
     'user.list.ratio'                                       => '比率',
+    'user.list.score'                                       => '分数',
     'user.list.prev'                                        => '上一页',
     'user.list.next'                                        => '下一页',
     'user.list.top'                                         => '第一页',
