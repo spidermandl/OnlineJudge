@@ -2019,3 +2019,28 @@ init_call_counter:3
 init_call_counter:3
 result=4
 <<1done!>>
+Judging solution 1062
+<<=sid=1062===clientid=0==>>
+
+init_call_counter:0
+init_call_counter:0
+init_call_counter:0
+init_call_counter:0
+init_call_counter:0
+init_call_counter:0
+init_call_counter:0
+result=4
+<<1done!>>
+Judging solution 1062
+<<=sid=1062===clientid=0==>>
+
+init_call_counter:0
+init_call_counter:0
+init_call_counter:0
+init_call_counter:0
+init_call_counter:0
+init_call_counter:0
+init_call_counter:0
+init_call_counter:0
+result=4
+<<1done!>>
