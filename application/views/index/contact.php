@@ -6,7 +6,7 @@
 <dt>About the Online Judge System</dt>
 <dd>If you are interested in the Online Judge System, you can get the source code from <?php echo(HTML::anchor('http://code.google.com/p/hustoj', 'Google Code')); ?></dd>
 <dt>help Center</dt>
-<dd>Any other problems please contact freefcw@gmail.com</dd>
+<dd>Any other problems please contact Desmond@gmail.com</dd>
 </dl>
 
 <div id="join">
