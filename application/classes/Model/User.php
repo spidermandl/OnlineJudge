@@ -23,6 +23,7 @@ class Model_User extends Model_Base
         'locale',
         'theme',
         'score',
+        'punish',
     );
 
     static $primary_key = 'user_id';
@@ -45,6 +46,7 @@ class Model_User extends Model_Base
     public $locale;
     public $theme;
     public $score;
+    public $punish;
 
     /* @var Model_Privilege[] $permission_list */
     protected $permission_list = null;

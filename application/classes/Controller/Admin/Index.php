@@ -61,7 +61,7 @@ class Controller_Admin_Index extends Controller_Admin_Base
                     continue;
 		}
            }    
-           $u->score = $point;
+           $u->score = $point - $u->punish;
            $u->save();
         }
         
