@@ -36,8 +36,12 @@ if (isset($cid)) {
     </dd>
     <dt><?php echo(__('problem.show.hint')); ?></dt>
     <dd><?php echo($problem['hint']); ?></dd>
-    <dt><?php echo(__('problem.show.source')); ?></dt>
-    <dd><?php echo($problem['source']); ?></dd>
+    <?php if ( OJ::is_admin() ):?>
+    	<dt><?php echo(__('problem.show.source')); ?></dt>
+    	<dd>
+            <pre><?php echo($problem['source']); ?></pre>
+        </dd>
+    <?php endif;?>
 </dl>
 
 <?php
