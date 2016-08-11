@@ -49,7 +49,7 @@
                 <div class="form-group">
                     <label for="disabled" class="control-label col-sm-2"><?php echo(__('admin.user.edit.disable_user')); ?></label>
                     <div class="col-sm-10">
-                        <select class="form-control" id="disabled" name="disabled">
+                        <select class="form-control" id="disabled" name="permission[]">
                             <option value="0"
                                     <?php if (array_key_exists('disabled', $user) and $user['disabled'] == false): ?>selected="selected"<?php endif; ?>>
                                 <?php echo(__('admin.user.edit.enabled')); ?>
