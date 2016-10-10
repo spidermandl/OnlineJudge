@@ -18,7 +18,7 @@
 <td><?php echo $p->problem_id;?></td>
 <td><?php echo $p->title;?></td>
 <td><?php echo($p->in_date);?></td>
-<td><a id="defunct-<?php echo($p->problem_id);?>" class="dp btn" data-value="<?php echo $p->problem_id;?>"><?php echo(__($p->defunct));?></a></td>
+<td><a id="defunct-<?php echo($p->problem_id);?>" class="dp btn" data-url="<?php echo e::url("/admin/problem/defunct"); ?>" data-value="<?php echo $p->problem_id;?>"><?php echo(__($p->defunct));?></a></td>
 <!--<td><a class="edit-link" href="<?php e::url("/admin/problem/defunct/{$p->problem_id}");?>"><?php echo(__($p->defunct));?></a></td>-->
 <td><a class="edit-link" href="<?php e::url("/admin/problem/edit/{$p->problem_id}");?>"><?php echo(__('admin.problem.list.edit')); ?></a></td>
 </tr>
@@ -49,7 +49,8 @@
         var user_ok = confirm('<?php echo(__('admin.problem.list.sure_to_change_defunct?')); ?>');
         if (user_ok)
         {
-            var url = '/admin/problem/defunct';
+            //var url = '/admin/problem/defunct';
+	    var url = $(this).attr('data-url');
             $.getJSON(url, {'problem_id': problem_id}, function(response){
 
                 console.log(response);
