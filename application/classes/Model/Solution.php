@@ -46,6 +46,7 @@ class Model_Solution extends Model_Base
         'solution_id',
         'problem_id',
         'user_id',
+        'group_id',
         'time',
         'memory',
         'in_date',
@@ -63,6 +64,7 @@ class Model_Solution extends Model_Base
     public $solution_id;
     public $problem_id;
     public $user_id;
+    public $group_id;
     public $time;
     public $memory;
     public $in_date;
@@ -146,6 +148,7 @@ class Model_Solution extends Model_Base
     {
         $solution = new Model_Solution();
         $solution->user_id = $user->user_id;
+        $solution->group_id = $user->group_id;
         $solution->problem_id = $problem->problem_id;
         $solution->language = $language;
         $solution->ip = Request::$client_ip;
@@ -178,7 +181,7 @@ class Model_Solution extends Model_Base
 
         return $result['total'];
     }
-    
+
     public static function ids_of_problem_accept_for_user($user_id)
     {
         $query = DB::select(DB::expr('DISTINCT problem_id'))->from(self::$table)
@@ -272,23 +275,43 @@ class Model_Solution extends Model_Base
      *
      * @return array
      */
-    public static function solution_by_rank($problem_id, $page=0, $limit=50)
+    public static function solution_by_rank($current_group,$problem_id, $page=0, $limit=50)
     {
         $start = $page * $limit;
 
-        $sql = 'SELECT solution_id, problem_id, count(*) AS att, user_id, language, memory, time, min(10000000000000000000 + time * 100000000000 + memory * 100000 + code_length) AS score, in_date
+
+       if (!$current_group) {
+          $sql = 'SELECT solution_id, problem_id, count(*) AS att, user_id, language, memory, time, min(10000000000000000000 + time * 100000000000 + memory * 100000 + code_length) AS score, in_date
                 FROM solution
                 WHERE result = :status
                 AND problem_id = :problem_id
-                GROUP BY user_id
+                GROUP BY solution_id,user_id
                 ORDER BY score, in_date
                 LIMIT :start, :limit';
-
-        $query = DB::query(Database::SELECT, $sql)
+                $query = DB::query(Database::SELECT, $sql)
             ->param(':status', self::STATUS_AC)
             ->param(':problem_id', $problem_id)
             ->param(':start', $start)
             ->param(':limit', $limit);
+       }else{
+         $sql = 'SELECT solution_id, problem_id, count(*) AS att, user_id, language, memory, time, min(10000000000000000000 + time * 100000000000 + memory * 100000 + code_length) AS score, in_date
+                FROM solution
+                WHERE result = :status
+                AND problem_id = :problem_id
+                AND group_id = :group_id
+                GROUP BY solution_id,user_id
+                ORDER BY score, in_date
+                LIMIT :start, :limit';
+                $query = DB::query(Database::SELECT, $sql)
+            ->param(':status', self::STATUS_AC)
+            ->param(':problem_id', $problem_id)
+            ->param(':group_id', $current_group)
+            ->param(':start', $start)
+            ->param(':limit', $limit);
+       }
+
+
+
 
         $result = $query->execute();
 
@@ -397,5 +420,20 @@ class Model_Solution extends Model_Base
             $this->code->solution_id = $this->solution_id;
             $this->code->save();
         }
+    }
+
+
+    //add
+    public static function user_all_solution($user_id){
+
+        $query = DB::select()->from(self::$table)
+            ->where('user_id', '=', $user_id);
+
+        $query->order_by('in_date',  Model_Base::ORDER_ASC);
+
+
+        $result = $query->as_object(get_called_class())->execute();
+
+        return $result->as_array();
     }
 }

@@ -16,6 +16,11 @@ class Controller_Base extends Controller
         }
         $this->init();
         I18n::setup();
+        $user = $this->get_current_user();
+        if (!$user) {
+            
+        }
+
     }
     /**
      * initialize controller
@@ -85,6 +90,19 @@ class Controller_Base extends Controller
     {
         $user = $this->check_login();
         if ( ! $user->is_admin() )
+        {
+            $this->go_home();
+        }
+        return $user;
+    }
+
+     /**
+     * check current user is leader
+     */
+    public function check_leader()
+    {
+        $user = $this->check_login();
+        if ( ! $user->is_leader() )
         {
             $this->go_home();
         }

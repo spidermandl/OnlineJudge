@@ -9,6 +9,7 @@ class Model_Problem extends Model_Base
 {
     static $cols = array(
         'problem_id',
+        'level',
         'title',
         'description',
         'input',
@@ -35,6 +36,7 @@ class Model_Problem extends Model_Base
     const JUDGE_NORMAL  = 0;
 
     public $problem_id;
+    public $level;
     public $title;
     public $description;
     public $input;
@@ -172,9 +174,9 @@ class Model_Problem extends Model_Base
      *
      * @return Model_Solution[]
      */
-    public function best_solution($page=0, $limit=50)
+    public function best_solution($current_group, $page=0, $limit=50)
     {
-        return Model_Solution::solution_by_rank($this->problem_id, $page, $limit);
+        return Model_Solution::solution_by_rank($current_group,$this->problem_id, $page, $limit);
     }
 
     public function have_new_solution()

@@ -1,0 +1,3 @@
+<a class="side-bar btn btn-primary" href="<?php e::url("/leader/setting");?>"><?php echo(__('admin.settings.sidebar.all_options')); ?></a>
+<a class="side-bar btn btn-primary" href="<?php e::url("/leader/setting/defaults");?>"><?php echo(__('admin.settings.sidebar.defaults')); ?></a>
+<a class="side-bar btn btn-primary" href="<?php e::url("/leader/setting/edit");?>"><?php echo(__('admin.settings.sidebar.new_option')); ?></a>

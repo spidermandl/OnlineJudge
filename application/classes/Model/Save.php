@@ -12,20 +12,23 @@ abstract class Model_Save extends Model_Base
      *
      * @return int
      */
-    public function save()
+  public function save()
     {
         // prepare data
-        //        $this->data['update_at'] = PP::format_time();
+//        $this->data['update_at'] = PP::format_time();
 
         // 过滤不存在的数据
         $data = $this->raw_array();
 
-        // else save new record
-        $keys   = array_keys($data);
-        $values = array_values($data);
+            // else save new record
+            $keys   = array_keys($data);
+            $values = array_values($data);
 
-        $query  = DB::insert(static::$table, $keys)->values($values);
+            list($id, $affect_row) = DB::insert(static::$table, $keys)->values($values)->execute();
 
-        $query->execute();
+            $this->{static::$primary_key} = $id;
+
+            return $affect_row;
+      
     }
 }

@@ -11,6 +11,8 @@
 <?php if ( OJ::is_backend() ):?>
 <script type="text/javascript" src="<?php e::url('js/jquery-ui-1.10.3.custom.js');?>"></script>
 <script type="text/javascript" src="<?php e::url('js/tinymce/tinymce.min.js');?>"></script>
+<script type="text/javascript" src="<?php e::url('js/jquery-ui-timepicker-addon.js');?>"></script>
+<script type="text/javascript" src="<?php e::url('js/echarts.min.js');?>"></script>
 <script type="text/javascript" src="<?php e::url('uploadify/jquery.uploadify.min.js');?>"></script>
 <link rel="stylesheet" href="<?php e::url('uploadify/uploadify.css');?>">
 <?php endif;?>
@@ -25,6 +27,17 @@
 <script type="text/javascript" src="<?php e::url('js/nprogress.js');?>"></script>
 <script type="text/javascript" src="<?php e::url('js/respond.js');?>"></script>
 <script type="text/javascript" src="<?php e::url('js/jquery.html5-placeholder-shim.js');?>"></script>
+<?php endif;?>
+
+
+
+<?php if ( OJ::is_backendl() ):?>
+<script type="text/javascript" src="<?php e::url('js/jquery-ui-1.10.3.custom.js');?>"></script>
+<script type="text/javascript" src="<?php e::url('js/tinymce/tinymce.min.js');?>"></script>
+<script type="text/javascript" src="<?php e::url('js/jquery-ui-timepicker-addon.js');?>"></script>
+<script type="text/javascript" src="<?php e::url('js/echarts.min.js');?>"></script>
+<script type="text/javascript" src="<?php e::url('uploadify/jquery.uploadify.min.js');?>"></script>
+<link rel="stylesheet" href="<?php e::url('uploadify/uploadify.css');?>">
 <?php endif;?>
 <script type="text/javascript" src="<?php e::url('js/jquery.bs.js');?>"></script>
 <script type="text/javascript" src="<?php e::url('js/site.js');?>"></script>

@@ -11,15 +11,18 @@ class Model_Privilege extends Model_Save
     static $primary_key = 'user_id';
 
     const PERM_ADMIN = 'administrator';
+    const PERM_LEADER = 'leader';
     const PERM_SOURCEVIEW = 'source_browser';
 
     static $cols = array(
         'user_id',
+        'group_id',
         'rightstr',
         'defunct',
     );
 
     public $user_id;
+    public $group_id;
     public $rightstr;
     public $defunct;
 
@@ -31,6 +34,36 @@ class Model_Privilege extends Model_Save
         $result = self::find($filter, 0, 0);
         return $result;
     }
+
+    public static function user_is_root_leader($user)
+    {
+
+        $permission_list = Model_Privilege::permission_of_user($user->user_id);
+
+
+       foreach($permission_list as $p)
+       {
+           if ( $p->rightstr == Model_Privilege::PERM_ADMIN || $p->rightstr == Model_Privilege::PERM_LEADER )
+           {
+
+               if ( $p->is_defunct() ) return false;
+               return true;
+           }
+       }
+       return false;
+    }
+
+
+    public static function permission_of_user_id()
+    {
+
+        $query = DB::select()->from(static::$table);
+        $result = $query->as_object(get_called_class())->execute();
+
+        return $result->as_array();
+    }
+
+
 
     public static function permission_list()
     {
@@ -53,6 +86,9 @@ class Model_Privilege extends Model_Save
 
         return $query->execute();
     }
+
+
+
 
     /**
      * @param $contest_id
@@ -88,7 +124,7 @@ class Model_Privilege extends Model_Save
         $query = DB::delete(static::$table)
             ->where('user_id', '=', $this->user_id)
             ->and_where('rightstr', '=', $this->rightstr);
-        
+
         return $query->execute();
     }
 

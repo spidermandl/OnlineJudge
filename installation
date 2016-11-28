@@ -1,6 +1,6 @@
 web搭建注意事项：
 安装软件
-yum install php httpd php-mysql mysql-server php-xml php-gd gcc-c++ php-mbstring glibc mysql-devel glibc-devel glibc-static httpd-devel
+yum install php httpd php-mysql mysql-server php-xml php-gd gcc-c++ php-mbstring glibc mysql-devel glibc-devel glibc-static httpd-devel php-mysqli
 
 
 config
@@ -30,9 +30,9 @@ service mysqld start
 配置Web界面
 cp -R web /var/www/html/JudgeOnline
 注册用户
-http://127.0.0.1/JudgeOnline/registerpage.php 注册一个普通帐号zhblue
+http://127.0.0.1/JudgeOnline/registerpage.php 注册一个普通帐号admin
 创建管理员
-insert into privilege(user_id,rightstr) values('zhblue','administrator'); zhblue 为需要加管理员权限的帐号
+insert into privilege(user_id,rightstr) values('admin','administrator'); admin 为需要加管理员权限的帐号
 管理员登录
 普通登录后访问http://127.0.0.1/JudgeOnline/admin
 

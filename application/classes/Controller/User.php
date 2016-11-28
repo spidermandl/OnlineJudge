@@ -3,20 +3,30 @@
 class Controller_User extends Controller_Base
 {
 
+
     public function action_list()
     {
+        if (  OJ::is_admin() ){
+            $this->go_home();
+            return;
+        }
+        $this->current_user = $this->check_login();
         // initial
         $page = $this->request->param('id', 1);
+
+        $user = $this->get_current_user();
 
         $orderby = array(
             //'solved' => Model_Base::ORDER_DESC,
             'score' => Model_Base::ORDER_DESC,
         );
 
-        $filter = array();
-        // user order by resolved problems
+        $filter = array(
+            'group_id' => $user['group_id'],
+            );
+        //user order by resolved problems
         $users = Model_User::find($filter, $page, OJ::per_page, $orderby);
-        
+
         // views
         $total = Model_User::count($filter);
         $this->template_data['title'] = __('user.list.user_rank');
@@ -101,7 +111,10 @@ class Controller_User extends Controller_Base
     }
 
     public function action_register()
+
     {
+
+
         if ( $this->request->is_post() and $this->check_captcha() )
         {
             // TODO: cleaned_post() caused password 'fo<ob>ar' problem
@@ -116,22 +129,87 @@ class Controller_User extends Controller_Base
                               ->rule('school', 'max_length', array(':value', 30))
                               ->rule('email', 'not_empty')
                               ->rule('email', 'max_length', array(':value', 30))
-                              ->rule('email', 'email');
-            if ($post->check()) {
-                $user = Model_User::find_by_id($post['username']);
-                if ( ! $user )
-                {
-                    $user = new Model_User;
-                    $user->update($post->data());
-                    $user->user_id = $post['username'];
-                    $user->update_password($post['password']);
-                    $user->save(true);
+                              ->rule('email', 'email')
+                              ->rule('invitation', 'min_length', array(':value', 6))
+                              ->rule('invitation', 'max_length', array(':value', 6));
 
-                    Auth::instance()->login($post['username'], $post['password'], true);
-                    $this->go_home();
-                } else {
-                    $this->flash_error(array(__('common.user_exist')));
-                }
+
+            if ($post->check()) {
+
+
+
+                        $user = Model_User::find_by_id($post['username']);
+
+                        if ( ! $user )
+                            {
+                            try {
+                                $mycache = new Memcache;
+                                $mycache ->connect('127.0.0.1',11211);
+                                $allcode = Model_InvitationCode::getMemcacheKeys($mycache);
+
+                                $user_group_id = null;
+                                $code_type = null;
+                                foreach ($allcode as $key) {
+                                    if(strpos($key,$post['invitation']) == true)
+                                    {
+                                        $mycache = new Memcache;
+                                        $mycache ->connect('127.0.0.1',11211);
+                                        $invitation = $mycache->get($key);
+                                        $user_group_id=$invitation['group_id'];
+                                        $code_type = $invitation['type'];
+                                      if ($invitation['num']==1) {
+                                            $mycache->delete($key);
+                                        }else{
+
+                                        //邀请码使用次数减一
+
+                                            $invitation["num"]=$invitation['num']-1;
+                                            $now = date('Y-m-d H:i:s');
+                                            $time = $invitation["time"]-(strtotime($now)- strtotime($invitation['cereatetime']));
+                                            $mycache->set($key,$invitation,0,$time);
+                                        }
+
+                                      break;
+                                    }
+                                }
+                              } catch (Exception $e) {
+
+                              }
+
+
+                        if ($user_group_id!=null) {
+
+
+                            $user = new Model_User;
+
+                            $user->update($post->data());
+                            $user->group_id = $user_group_id;
+                            $user->user_id = $post['username'];
+                            $user->update_password($post['password']);
+                            $user->save(true);
+
+
+                            if ($invitation['type']==2) {
+                                $privilege = new Model_Privilege;
+                                $privilege->user_id=$post['username'];
+                                $privilege->group_id=$user_group_id;
+                                $privilege->rightstr=Model_Privilege::PERM_LEADER;
+                                $privilege->save();
+
+                            }
+
+                            Auth::instance()->login($post['username'], $post['password'], true);
+                            $this->go_home();
+                        } else {
+                            $this->flash_error(array(__('common.code_not_found')));
+                        }
+                    }else{
+                         $this->flash_error(array(__('common.user_exist')));
+
+
+                    }
+
+
             }
             $errors = $post->errors("User");
             $this->flash_error($errors);
@@ -169,10 +247,17 @@ class Controller_User extends Controller_Base
     {
         $username = $this->get_post('username');
         $password = $this->get_post('pwd');
+
         if ( Auth::instance()->login($username, $password, true) ) {
             // go back url
             $ss = Session::instance();
             $url = $ss->get_once('return_url');
+
+            // if ($this->check_admin()) {
+            //     $this->$this->redirect($url);
+            // }
+
+
             if ( ! $url )
             {
                $this->go_home();
@@ -226,7 +311,7 @@ class Controller_User extends Controller_Base
     public function action_logout()
     {
         Auth::instance()->logout();
-        
+
         $this->go_home();
     }
 
