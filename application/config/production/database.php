@@ -10,7 +10,7 @@ return array
         'type'       => 'MySQLi',
         'connection' => array(
             'hostname'   => '127.0.0.1',
-            'database'   => 'judge',
+            'database'   => 'judge_dev',
             'username'   => 'root',
             'password'   => '',
             'persistent' => FALSE,
