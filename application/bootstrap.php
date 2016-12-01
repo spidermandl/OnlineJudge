@@ -143,7 +143,7 @@ Cookie::$domain = $config->get('domain');
  * Set the routes. Each route must have a minimum of a name, a URI and a set of
  * defaults for the URI.
  */
-Route::set('show_problem_data', 'admin/problem/showdata/<id>/<filename>.<ext>', array(
+Route::set('admin_show_problem_data', 'admin/problem/showdata/<id>/<filename>.<ext>', array(
     'filename' => '\w+',
     'ext' => '\w+',
 ))->defaults(array(
@@ -153,7 +153,7 @@ Route::set('show_problem_data', 'admin/problem/showdata/<id>/<filename>.<ext>', 
                 )
      );
 
-Route::set('del_problem_data', 'admin/problem/deldata/<id>/<filename>.<ext>', array(
+Route::set('admin_del_problem_data', 'admin/problem/deldata/<id>/<filename>.<ext>', array(
     'filename' => '\w+',
     'ext' => '\w+',
 ))->defaults(array(
@@ -163,6 +163,8 @@ Route::set('del_problem_data', 'admin/problem/deldata/<id>/<filename>.<ext>', ar
                 )
      );
 
+
+
 Route::set('admin', 'admin(/<controller>(/<action>(/<id>)))')
     ->defaults(array(
         'directory'  => 'admin',
@@ -170,6 +172,52 @@ Route::set('admin', 'admin(/<controller>(/<action>(/<id>)))')
         'action'     => 'index'
     )
 );
+
+
+//组管理员
+
+Route::set('show_problem_data', 'leader/problem/showdata/<id>/<filename>.<ext>', array(
+    'filename' => '\w+',
+    'ext' => '\w+',
+))->defaults(array(
+                    'directory'  => 'leader',
+                    'controller' => 'problem',
+                    'action'     => 'showdata'
+                )
+     );
+
+Route::set('del_problem_data', 'leader/problem/deldata/<id>/<filename>.<ext>', array(
+    'filename' => '\w+',
+    'ext' => '\w+',
+))->defaults(array(
+                    'directory'  => 'leader',
+                    'controller' => 'problem',
+                    'action'     => 'deldata'
+                )
+     );
+
+
+
+Route::set('leader', 'leader(/<controller>(/<action>(/<id>)))')
+    ->defaults(array(
+        'directory'  => 'leader',
+        'controller' => 'index',
+        'action'     => 'index'
+    )
+);
+
+
+
+
+    //new
+//     Route::set(
+//     'situation', 'situation/<action>',
+//     array('action' => '(inject)')
+// )->defaults(array(
+//          'controller' => 'situation'
+//     )
+// );
+
 
 Route::set(
     'auth', '<action>',

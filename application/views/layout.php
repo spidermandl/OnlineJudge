@@ -24,8 +24,11 @@
 <?php
     if ( OJ::is_backend())
         echo View::factory('block/backend_nav');
+    else if (OJ::is_backendl())
+        echo View::factory('block/backendl_nav');
     else
         echo View::factory('block/frontend_nav');
+
 ?>
         <?php echo View::factory('block/user_control'); ?>
         </div><!--/.nav-collapse -->
@@ -34,10 +37,19 @@
 <div class="container">
 <?php if (OJ::is_backend()):?>
     <div class="row">
-        <div class="col-md-1 sidebar">
-            <?php echo View::factory('admin/'. strtolower(Request::current()->controller()).'/sidebar');?>
+        <?php echo View::factory('admin/'. strtolower(Request::current()->controller()).'/sidebar');?>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3><?php echo $title;?></h3>
+            <?php echo View::factory('block/message');?>
+            <?php echo($body); ?>
         </div>
-        <div class="col-md-11">
+    </div>
+<?php else: if (OJ::is_backendl()):?>
+    <div class="row">
+        <?php echo View::factory('leader/'. strtolower(Request::current()->controller()).'/sidebar');?>
+        <div class="col-md-12">
             <h3><?php echo $title;?></h3>
             <?php echo View::factory('block/message');?>
             <?php echo($body); ?>
@@ -46,6 +58,7 @@
 <?php else:?>
     <?php echo View::factory('block/message');?>
     <?php echo($body); ?>
+<?php endif;?>
 <?php endif;?>
 </div>
 <?php echo(View::factory('footer')); ?>

@@ -13,6 +13,10 @@
 class e
 {
 
+    //invitation save to memory
+    public static $codeMemory = array() ;
+
+
     const LOGIN_URL = '/user/login';
     const LOGOUT_URL = '/user/logout';
     const DISABLED_URL = '/user/disabled';
@@ -297,7 +301,7 @@ class e
     }
 
     /**
-     * get website description 
+     * get website description
      *
      * @return string
      */
@@ -316,7 +320,7 @@ class e
         return e::get_base_config('keyword', '');
     }
 
-    public static function pass_status(Model_Problem $problem)
+    public static function  pass_status(Model_Problem $problem)
     {
         /* @var Model_User $cu */
         $cu = Auth::instance()->get_user();

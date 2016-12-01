@@ -1,0 +1,1 @@
+<a class="side-bar btn btn-primary" href="<?php e::url("/leader/news/add");?>"><?php echo(__('admin.news.sidebar.new')); ?></a>
