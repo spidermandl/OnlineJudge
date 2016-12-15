@@ -138,13 +138,14 @@
                 success:function(data){
                     $(href).find('tbody').empty();
                     $.each(data, function(index, value) {
-                        var value_j = $.parseJSON(value);
+                        //var value_j = $.parseJSON(value);
+                        var value_j = value;
                         var tr = '<tr>'+
                                  '<td>'+value_j.code+'</td>'+
                                  '<td>'+value_j.group_id+'</td>'+
-                                 '<td>'+value_j.num+'</td>'+
+                                 '<td>'+value_j.cap+'</td>'+
                                  '<td>'+(value_j.type=="1"?"<?php echo __('admin.index.group_member'); ?>":"<?php echo __('admin.index.group_leader'); ?>")+'</td>'+
-                                 '<td>'+value_j.cereatetime+'</td>'+
+                                 '<td>'+value_j.create_time+'</td>'+
                                  '</tr>';
                         $(href).find('tbody').append(tr);
                     });

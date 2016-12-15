@@ -120,7 +120,6 @@ Kohana::$base_url = $config->get('base_url', '/');
  * Enable modules. Modules are referenced by a relative or absolute path.
  */
 Kohana::modules(Kohana::$config->load('modules')->as_array());
-//var_dump(MODPATH.'database');
 // Kohana::modules(array(
 //     // 'auth'       => MODPATH.'auth',       // Basic authentication
 //     // 'cache'      => MODPATH.'cache',      // Caching with multiple backends

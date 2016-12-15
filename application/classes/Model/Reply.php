@@ -36,6 +36,7 @@ class Model_Reply extends Model_Base
         $this->ip = Request::$client_ip;
     }
 
-    public function validate()
-    {}
+    public function validate(){
+        
+    }
 }

@@ -88,17 +88,16 @@ class Model_Option extends Model_Base
         return self::$local_cache;
     }
 
-    public function initial_data()
-    {
+    public function initial_data(){
 
     }
 
-    public function save()
-    {
+    public function save(){
         parent::save();
         self::$local_cache = null;
     }
 
-    public function validate()
-    {}
+    public function validate(){
+
+    }
 }

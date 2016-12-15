@@ -1,8 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 class Controller_Leader_Groups extends Controller_Leader_Base{
-
-
   /*
   author : zhang zexiang
   function : group config

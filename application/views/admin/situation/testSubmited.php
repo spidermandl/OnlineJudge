@@ -9,10 +9,9 @@
     <tr>
         <th><?php echo(__('top_backend.user')); ?></th>
         <th><?php echo(__('data')); ?></th>
-        <th><?php echo(__('group')); ?></th>
-        <th><?php echo(__('submited')); ?></th>
+        <th><?php echo(__('submit')); ?></th>
         <th><?php echo(__('score')); ?></th>
-        <th><?php echo(__('staged')); ?></th>
+        <th><?php echo(__('stage')); ?></th>
         <th><?php echo(__('during_time')); ?></th>
         <th><?php echo(__('defunct')); ?></th>
 

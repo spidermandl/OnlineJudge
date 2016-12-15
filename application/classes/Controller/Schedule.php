@@ -8,11 +8,8 @@
 class Controller_Schedule extends Controller_Base
 {
 
-
-
     //run per one day
-    public function action_inject()
-    {
+    public function action_inject(){
 // $this->view = 'situation/list';
         $this->view = 'schedule/inject';
 
@@ -22,9 +19,8 @@ class Controller_Schedule extends Controller_Base
         $last_day_date = date('Y-m-d',strtotime("yesterday"));
         // $last_day_date = date('Y-m-d');
 
-
         if(Model_Situation::check_exists($last_day_date)!=null){
-             $title = __('ee');
+            $title = __('ee');
             $this->template_data['title'] = $title;
             return ;
         }
@@ -107,7 +103,6 @@ class Controller_Schedule extends Controller_Base
 
         $this->template_data['oneday_user_id'] = $oneday_user_id;
 
-
         foreach ($do_nothing_user_id as $key) {
             # code...
             $oneday_user_detail = Model_Situation::get_oneday_userdetail($key);
@@ -126,28 +121,6 @@ class Controller_Schedule extends Controller_Base
 
             $situation->save();
 
-        }
-    }
-
-
-
-    public function action_source()
-    {
-        $user = $this->check_login();
-
-        $sid = $this->request->param('id');
-        $solution = Model_Solution::find_by_id($sid);
-        $cinfo = Model_CInfo::for_solution($sid);
-        $rinfo = Model_RInfo::for_solution($sid);
-
-        if ( $solution and $solution->allow_view_code($user) )
-        {
-            $this->template_data['title'] = __('solution.source.solution_detail');
-            $this->template_data['solution'] = $solution;
-            $this->template_data['cinfo'] = $cinfo;
-            $this->template_data['rinfo'] = $rinfo;
-        } else {
-            throw new Exception_Page(__('common.solution_detail_not_found'));
         }
     }
 
