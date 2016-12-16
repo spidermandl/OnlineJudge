@@ -1,10 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Situation extends Controller_Base
-{
-
-
-
+class Controller_Situation extends Controller_Base{
 
 // //run per one day
 //     public function action_inject()

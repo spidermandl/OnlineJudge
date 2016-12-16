@@ -110,7 +110,23 @@ class Model_Situation extends Model_Base
         return $ret->as_array();
     }
 
+    /**
+     * 获取组中成员阶段进度
+     * @param  $date 时间范围
+     * @param  $group_id 组序号
+     */
+    public static function get_group_stage_progress_by_date($date,$group_id){
+        $date = date("Y-m-1 00:00:00",strtotime("$date"));
+        $query = DB::select()->from(self::$table)
+                ->join(Model_User::$table)->on(self::$table.'.user_id' , '=' , Model_User::$table.'.user_id')
+                ->where('date', '>=', $date)
+                ->where('date', '<', date("Y-m-d 00:00:00",strtotime("$date +1 month")))
+                ->where(Model_User::$table.'.group_id','=',$group_id)
+                ->order_by('date',Model_Base::ORDER_ASC);
 
+        $result = $query->as_object(get_called_class())->execute();
+        return $result->as_array();
+    }
     /**
      * @param       $text
      * @param       $area
@@ -126,8 +142,7 @@ class Model_Situation extends Model_Base
             ->where($area, 'LIKE', $term)
             ->where($left, '=' , $right);
             
-        foreach($orderby as $key => $order)
-        {
+        foreach($orderby as $key => $order){
             $query->order_by($key, $order);
         }
 

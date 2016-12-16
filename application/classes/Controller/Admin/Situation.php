@@ -2,10 +2,6 @@
 
 class Controller_Admin_Situation extends Controller_Admin_Base
 {
-
-
-
-
     public function action_index()
     {
         $this->view = 'situation/list';

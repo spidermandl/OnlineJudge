@@ -43,30 +43,27 @@ class Controller_Admin_Groups extends Controller_Admin_Base{
 
     }
 
-  //组列表
-  public function action_list(){
+    //组列表
+    public function action_list(){
       // $page = $this->request->param('page', 1);
-    $page = $this->get_query('page', 1);
-      $orderby = array(
-            //'solved' => Model_Base::ORDER_DESC,
-            'group_id' => Model_Base::ORDER_ASC,
-        );
+        $page = $this->get_query('page', 1);
+        $orderby = array(
+                    'group_id' => Model_Base::ORDER_ASC,
+                  );
 
-      $filter = array();
+        $filter = array();
+        $groups = Model_Groups::find($filter, $page, OJ::per_page, $orderby);
+        $total = Model_Groups::count($filter);
+        $this->template_data['title'] = __('admin.group.list.group_list');
+        $this->template_data['groups'] = $groups;
+        $this->template_data['page'] = $page;
+        $this->template_data['total'] = $total;
+        $this->template_data['total_page'] = ceil($total / OJ::per_page);
+        $this->template_data['per_page'] = OJ::per_page;
 
-      $groups = Model_Groups::find($filter, $page, OJ::per_page, $orderby);
-      $total = Model_Groups::count($filter);
-      $this->template_data['title'] = __('admin.group.list.group_list');
-      $this->template_data['groups'] = $groups;
-      $this->template_data['page'] = $page;
-      $this->template_data['total'] = $total;
-      $this->template_data['total_page'] = ceil($total / OJ::per_page);
-      $this->template_data['per_page'] = OJ::per_page;
+    }
 
-  }
-
-	public function action_del()
-    {
+    public function action_del(){
         // ban it forever, just mark it
         $user_id = $_GET['id'];
 
@@ -83,82 +80,50 @@ class Controller_Admin_Groups extends Controller_Admin_Base{
     function : group status graph
     data : 2016.11.15
      */
-
     public function action_status (){
+        $this->view = 'admin/situation/testSubmited';
+        $group_id = Arr::get($_GET,'id');
+        $date = Arr::get($_GET,'date');
 
-      $this->view = 'admin/situation/testSubmited';
-      $group_id = Arr::get($_GET,'id');
-      $date = Arr::get($_GET,'date');
+        $this->template_data['id'] = $group_id;
+        $this->template_data['date'] = $date;
+        $this->template_data['title'] = __('ddd');
 
-      $this->template_data['id'] = $group_id;
-      $this->template_data['date'] = $date;
-
-       $title = __('ddd');
-      $this->template_data['title'] = $title;
-
-      $group_config = Model_GroupConfig::find_by_id($group_id);
-
-
-      if($group_id==null || $group_config==null){
-        return 0;
-      }
-
-
-      $group_config_stages = $group_config->stage_num;
-
-      $this->template_data['group_config_stages'] = $group_config_stages;
-
-
-
-      $order_by = array(
-              'date' => Model_Base::ORDER_ASC
-          );
-
-      $result = Model_Situation::search($date,'date',$order_by,$show_all=true, 'group_id', $group_id);
-
-      $this->template_data['result'] = $result;
-
-      $alldata = array();
-      $eachday = array();
-
-      foreach ($result as $key) {
-
-          # code...
-        $time = date("Y-m-d",strtotime($key->date));
-
-        if (array_key_exists($time, $alldata)) {
-
-          $oldstage = $alldata[$time];
-
-          if(array_key_exists($key->staged, $oldstage)){
-
-            $oldstage[$key->staged] = $oldstage[$key->staged]+1;
-
-          }else{
-
-            $oldstage[$key->staged] = 1;
-          }
-
-          ksort($oldstage);
-          $alldata[$time] = $oldstage;
-
-        }else{
-
-          $alldata[$time] = array($key->staged => 1);
-
+        $group_config = Model_GroupConfig::find_by_id($group_id);
+        if($group_id==null || $group_config==null){
+            return 0;
         }
 
-      }
-      $alldata["stage_num"] =  $group_config_stages;
+        $group_config_stages = $group_config->stage_num;
+        $this->template_data['group_config_stages'] = $group_config_stages;
+        
+        /*$date 只包含年 月信息
+         *需要查出整月数据
+         *该部分逻辑需要重构
+         */
+        $result = Model_Situation::get_group_stage_progress_by_date($date,$group_id);
+        $this->template_data['result'] = $result;
 
+        $alldata = array();
+        foreach ($result as $key) {
+            $time = date("Y-m-d",strtotime($key->date));
 
-      $this->response->body(json_encode($alldata));
+            if (array_key_exists($time, $alldata)) {
+                $oldstage = $alldata[$time];
 
-      $this->template_data['result'] = $result;
-
-
-
+                if(array_key_exists($key->stage, $oldstage)){
+                    $oldstage[$key->stage] = $oldstage[$key->stage]+1;
+                }else{
+                    $oldstage[$key->stage] = 1;
+                }
+                ksort($oldstage);
+                $alldata[$time] = $oldstage;
+            }else{
+                $alldata[$time] = array($key->stage => 1);
+            }
+        }
+        $alldata["stage_num"] =  $group_config_stages;
+        $this->response->body(json_encode($alldata));
+        $this->template_data['result'] = $result;
     }
-
-
 }
