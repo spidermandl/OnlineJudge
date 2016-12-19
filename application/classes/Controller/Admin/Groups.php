@@ -5,16 +5,45 @@
 create group
 group list
 */
+class Controller_Admin_Groups extends Controller_Common_Group{
+    
+    /**
+    * 根路径，系统管理员和组管理员不同
+    */
+    protected function rootPath(){
+        return 'admin';
+    }
+    /**
+    * 根路径，系统管理员和组管理员不同
+    */
+    protected function isLeader(){
+        return false;
+    }
+    
+    //组列表
+    public function action_list(){
+      // $page = $this->request->param('page', 1);
+        $page = $this->get_query('page', 1);
+        $orderby = array(
+                    'group_id' => Model_Base::ORDER_ASC,
+                  );
 
+        $filter = array();
+        $groups = Model_Groups::find($filter, $page, OJ::per_page, $orderby);
+        $total = Model_Groups::count($filter);
+        $this->template_data['title'] = __('admin.group.list.group_list');
+        $this->template_data['groups'] = $groups;
+        $this->template_data['page'] = $page;
+        $this->template_data['total'] = $total;
+        $this->template_data['total_page'] = ceil($total / OJ::per_page);
+        $this->template_data['per_page'] = OJ::per_page;
 
-class Controller_Admin_Groups extends Controller_Admin_Base{
+    }
 
-    public function action_index()
-    {
-    	$this->template_data['title'] = __('New group');
+    public function action_index(){
+    	  $this->template_data['title'] = __('New group');
         $this->view = 'admin/groups/list';
         $this->action_list();
-
     }
 
     /*
@@ -43,25 +72,6 @@ class Controller_Admin_Groups extends Controller_Admin_Base{
 
     }
 
-    //组列表
-    public function action_list(){
-      // $page = $this->request->param('page', 1);
-        $page = $this->get_query('page', 1);
-        $orderby = array(
-                    'group_id' => Model_Base::ORDER_ASC,
-                  );
-
-        $filter = array();
-        $groups = Model_Groups::find($filter, $page, OJ::per_page, $orderby);
-        $total = Model_Groups::count($filter);
-        $this->template_data['title'] = __('admin.group.list.group_list');
-        $this->template_data['groups'] = $groups;
-        $this->template_data['page'] = $page;
-        $this->template_data['total'] = $total;
-        $this->template_data['total_page'] = ceil($total / OJ::per_page);
-        $this->template_data['per_page'] = OJ::per_page;
-
-    }
 
     public function action_del(){
         // ban it forever, just mark it
@@ -75,55 +85,5 @@ class Controller_Admin_Groups extends Controller_Admin_Base{
         $this->action_index();
     }
 
-    /*
-    author : zhang zexiang
-    function : group status graph
-    data : 2016.11.15
-     */
-    public function action_status (){
-        $this->view = 'admin/situation/testSubmited';
-        $group_id = Arr::get($_GET,'id');
-        $date = Arr::get($_GET,'date');
 
-        $this->template_data['id'] = $group_id;
-        $this->template_data['date'] = $date;
-        $this->template_data['title'] = __('ddd');
-
-        $group_config = Model_GroupConfig::find_by_id($group_id);
-        if($group_id==null || $group_config==null){
-            return 0;
-        }
-
-        $group_config_stages = $group_config->stage_num;
-        $this->template_data['group_config_stages'] = $group_config_stages;
-        
-        /*$date 只包含年 月信息
-         *需要查出整月数据
-         *该部分逻辑需要重构
-         */
-        $result = Model_Situation::get_group_stage_progress_by_date($date,$group_id);
-        $this->template_data['result'] = $result;
-
-        $alldata = array();
-        foreach ($result as $key) {
-            $time = date("Y-m-d",strtotime($key->date));
-
-            if (array_key_exists($time, $alldata)) {
-                $oldstage = $alldata[$time];
-
-                if(array_key_exists($key->stage, $oldstage)){
-                    $oldstage[$key->stage] = $oldstage[$key->stage]+1;
-                }else{
-                    $oldstage[$key->stage] = 1;
-                }
-                ksort($oldstage);
-                $alldata[$time] = $oldstage;
-            }else{
-                $alldata[$time] = array($key->stage => 1);
-            }
-        }
-        $alldata["stage_num"] =  $group_config_stages;
-        $this->response->body(json_encode($alldata));
-        $this->template_data['result'] = $result;
-    }
 }

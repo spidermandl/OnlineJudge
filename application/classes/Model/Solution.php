@@ -46,7 +46,6 @@ class Model_Solution extends Model_Base
         'solution_id',
         'problem_id',
         'user_id',
-        'group_id',
         'time',
         'memory',
         'in_date',
@@ -64,7 +63,6 @@ class Model_Solution extends Model_Base
     public $solution_id;
     public $problem_id;
     public $user_id;
-    public $group_id;
     public $time;
     public $memory;
     public $in_date;
@@ -148,7 +146,6 @@ class Model_Solution extends Model_Base
     {
         $solution = new Model_Solution();
         $solution->user_id = $user->user_id;
-        $solution->group_id = $user->group_id;
         $solution->problem_id = $problem->problem_id;
         $solution->language = $language;
         $solution->ip = Request::$client_ip;
@@ -351,11 +348,9 @@ class Model_Solution extends Model_Base
     public static function solution_by_rank($current_group,$problem_id, $page=0, $limit=50)
     {
         $start = $page * $limit;
-
-
-       if (!$current_group) {
+        if (!$current_group) {
             $sql = 'SELECT solution_id, problem_id, count(*) AS att, user_id, language, memory, time, min(10000000000000000000 + time * 100000000000 + memory * 100000 + code_length) AS score, in_date
-                FROM solution
+                FROM solution 
                 WHERE result = :status
                 AND problem_id = :problem_id
                 GROUP BY solution_id,user_id
@@ -366,13 +361,15 @@ class Model_Solution extends Model_Base
             ->param(':problem_id', $problem_id)
             ->param(':start', $start)
             ->param(':limit', $limit);
-       }else{
+        }
+        else{
             $sql = 'SELECT solution_id, problem_id, count(*) AS att, user_id, language, memory, time, min(10000000000000000000 + time * 100000000000 + memory * 100000 + code_length) AS score, in_date
                 FROM solution
+                JOIN users ON users.user_id = solution.user_id
                 WHERE result = :status
                 AND problem_id = :problem_id
-                AND group_id = :group_id
-                GROUP BY solution_id,user_id
+                AND users.group_id = :group_id
+                GROUP BY solution_id,solution.user_id
                 ORDER BY score, in_date
                 LIMIT :start, :limit';
             $query = DB::query(Database::SELECT, $sql)
@@ -381,13 +378,9 @@ class Model_Solution extends Model_Base
             ->param(':group_id', $current_group)
             ->param(':start', $start)
             ->param(':limit', $limit);
-       }
-
-
-
+        }
 
         $result = $query->execute();
-
         return $result->as_array();
     }
 
@@ -509,4 +502,69 @@ class Model_Solution extends Model_Base
 
         return $result->as_array();
     }
+
+
+     /**
+     *
+     * 通过简单的过滤器查找数据
+     *
+     * @param array $filters
+     * @param int   $page
+     * @param int   $limit
+     * @param array $orderby
+     *
+     * @return Model_Base[]|Model_Code[]|Model_Problem[]|Model_User[]|Model_Topic[]
+     */
+    public static function find($filters, $page = 1, $limit = 50, $orderby=array(),$group_id=NULL)
+    {
+        $query = DB::select()->from(static::$table);
+        if($group_id){
+            $query->join(Model_User::$table)->on(self::$table.'.user_id' , '=' , Model_User::$table.'.user_id')
+                ->where(Model_User::$table.'.group_id','=',$group_id);
+        }
+        foreach($filters as $col => $value)
+        {
+            $query->where($col, '=', $value);
+        }
+        if ( $limit ) $query->limit($limit);
+        if ( $page ) $query->offset( $limit * ($page - 1));
+
+        foreach($orderby as $col => $order)
+        {
+            $query->order_by($col,  $order);
+        }
+
+        $result = $query->as_object(get_called_class())->execute();
+
+        return $result->as_array();
+    }
+
+    /**
+     *
+     * 统计数目
+     * 主要注意的是innodb的count性能不如myisam
+     *
+     * @param array $filters
+     *
+     * @return int
+     */
+    public static function count($filters = array(),$group_id=NULL)
+    {
+        $query = DB::select(array(DB::expr('COUNT(*)'), 'total'))
+                   ->from(static::$table);
+        if($group_id){
+            $query->join(Model_User::$table)->on(self::$table.'.user_id' , '=' , Model_User::$table.'.user_id')
+                ->where(Model_User::$table.'.group_id','=',$group_id);
+        }
+        foreach($filters as $col => $value)
+        {
+            $query->where($col, '=', $value);
+        }
+
+        $result = $query->execute();
+        $item = $result->current();
+        return $item['total'];
+    }
+
+
 }

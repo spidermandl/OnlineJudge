@@ -18,7 +18,6 @@ class Controller_Admin_User extends Controller_Common_User{
     {
         $page = $this->get_query('page', 1);
         $group = $this->get_query('id',null);
-
         $filter = array(
             'group_id' => $group,
             );
