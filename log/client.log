@@ -3036,3 +3036,18 @@ Judging solution 15301
 init_call_counter:3
 result=6
 <<1done!>>
+Judging solution 17462
+<<=sid=17462===clientid=0==>>
+
+init_call_counter:3
+init_call_counter:3
+init_call_counter:3
+init_call_counter:3
+init_call_counter:3
+init_call_counter:3
+init_call_counter:3
+init_call_counter:3
+init_call_counter:3
+init_call_counter:3
+result=10
+<<1done!>>
