@@ -4,132 +4,79 @@
  * @author: zhang ze xiang
  * Date: 4/11/2016
  * Time: 11:59 AM
+ * 用户题目生成表
+ CREATE TABLE IF NOT EXISTS `users_problem` (
+  `user_problem_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(48) NOT NULL,
+  `stage` int(4) ,
+  `problem_set` text CHARACTER SET utf8,
+  `pending1` text CHARACTER SET utf8,
+  `pending2` text CHARACTER SET utf8,
+  `pending3` text CHARACTER SET utf8,
+   PRIMARY KEY (`user_problem_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
  */
 
 class Model_UsersProblem extends Model_Base
 {
     static $cols = array(
+        'user_problem_id',
         'user_id',
-        'problem_id',
+        'problem_set',
         'stage',
     );
 
-    static $primary_key = 'user_id';
+    static $primary_key = 'problem_status_id';
 
     static $table = 'users_problem';
-
+    
+    public $user_problem_id;
     public $user_id;
-    public $problem_id;
+    public $problem_set;//json 字符串
     public $stage;
-
-    public static $pass_num_add = 0;    //this is all this stage promblem number
-
-
-    public static function UniqueRandomNumbersWithinRange($min, $max, $quantity) {
-        $numbers = range($min, $max);
-        shuffle($numbers);
-        return array_slice($numbers, 0, $quantity);
-    }
 
 
     /*
-    author: zhang zexiang
-    funtion: get current stage --> problem level
-    date: 2016.11.5 14:45
+      author: zhang zexiang
+      funtion: get current stage --> problem level
+      date: 2016.11.5 14:45
      */
-    public static function find_current_problem($user_id, $current_user_stage)
-    {
+    public static function find_problem_id_by_stage($user_id, $current_user_stage){
 
-
-        $query = DB::select('problem_id')->from(static::$table)
+        $query = DB::select('problem_set')->from(static::$table)
             ->where('user_id', '=', $user_id)
             ->where('stage', '=', $current_user_stage);
 
-
-        $result = $query->execute();
-        return $result;
+        $obj = $query->as_object(get_called_class())->execute()->current();
+        return $obj == NULL ? array() : json_decode($obj->problem_set);
     }
+    
+    /**
+    * 获取用户所有已生成的题目
+    */
+    public static function find_current_all_problem_id($user_id){
 
-    public static function find_current_all_problem_id($user_id)
-    {
-
-
-        $query = DB::select('problem_id')->from(static::$table)
+        $query = DB::select('problem_set')->from(static::$table)
             ->where('user_id', '=', $user_id);
-
-        $result = $query->execute();
-        return $result->as_array();
-    }
-
-
-    public static function find_level_problem($problem_level)
-    {
-
-
-        $query = DB::select()->from('problem')
-            ->where('level', '=', $problem_level)
-            ->where('defunct', '=', "N");
-
-
-        $result = $query->execute();
-        return $result;
-    }
-
-
-    public static function find_current_problemlist($current_problem)
-    {
-        $all_stage_problem = array();
-
-        foreach ($current_problem as $key) {
-
-            array_push($all_stage_problem,Model_Problem::find_by_id($key));
-
+        
+        $problems = $query->as_object(get_called_class())->execute()->as_array();
+        $result = array();
+        foreach ($problems as $p) {
+            $list = json_decode($p->problem_set);
+            foreach ($list as $id) {
+                array_push($result, $id);
+            }
         }
 
-        return $all_stage_problem;
+        return $result;
     }
 
 
+    protected function initial_data(){
 
-
-
-
-
-    /**
-     * 保存当前实例到数据库
-     *
-     * @return int
-     */
-    public function save()
-    {
-        // prepare data
-        //        $this->data['update_at'] = PP::format_time();
-
-        // 过滤不存在的数据
-        $data = $this->raw_array();
-
-        // else save new record
-        $keys   = array_keys($data);
-        $values = array_values($data);
-
-        $query  = DB::insert(static::$table, $keys)->values($values);
-
-        $query->execute();
     }
 
+    public function validate(){
 
-
-
-    protected function initial_data()
-    {
-        $this->title       = '';
-        $this->start_time  = '';
-        $this->end_time    = '';
-        $this->defunct     = self::DEFUNCT_NO;
-        $this->description = '';
-        $this->private     = 1;
     }
-
-    public function validate()
-    {}
 }

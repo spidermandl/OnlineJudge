@@ -1,5 +1,6 @@
 <?php defined('SYSPATH') OR die('No direct script access.'); ?>
 
+<<<<<<< HEAD
 2016-12-05 03:50:43 --- EMERGENCY: Session_Exception [ 1 ]: Error reading session data. ~ SYSPATH/classes/Kohana/Session.php [ 324 ] in /home/OnlineJudge/system/classes/Kohana/Session.php:125
 2016-12-05 03:50:43 --- DEBUG: #0 /home/OnlineJudge/system/classes/Kohana/Session.php(125): Kohana_Session->read(NULL)
 #1 /home/OnlineJudge/modules/database/classes/Kohana/Session/Database.php(74): Kohana_Session->__construct(Array, NULL)
@@ -4301,3 +4302,8 @@
 #13 /home/OnlineJudge/system/classes/Kohana/Request.php(995): Kohana_Request_Client->execute(Object(Request))
 #14 /home/OnlineJudge/index.php(103): Kohana_Request->execute()
 #15 {main} in /home/OnlineJudge/system/classes/Kohana/Session.php:125
+=======
+2016-12-05 02:00:19 --- EMERGENCY: ErrorException [ 1 ]: Class 'Memcache' not found ~ APPPATH/classes/Controller/Admin/Index.php [ 12 ] in file:line
+2016-12-05 02:00:19 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+>>>>>>> development

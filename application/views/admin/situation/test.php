@@ -9,10 +9,9 @@
     <tr>
         <th><?php echo(__('top_backend.user')); ?></th>
         <th><?php echo(__('data')); ?></th>
-        <th><?php echo(__('group')); ?></th>
-        <th><?php echo(__('submited')); ?></th>
+        <th><?php echo(__('submit')); ?></th>
         <th><?php echo(__('score')); ?></th>
-        <th><?php echo(__('staged')); ?></th>
+        <th><?php echo(__('stage')); ?></th>
         <th><?php echo(__('during_time')); ?></th>
         <th><?php echo(__('defunct')); ?></th>
 
@@ -27,10 +26,9 @@
 
         <td class="pid "><?php   echo($solution->user_id); ?></td>
         <td class="pid "><?php   echo($solution->date); ?></td>
-        <td class="pid "><?php   echo($solution->group_id); ?></td>
-        <td class="pid "><?php   echo($solution->submited); ?></td>
+        <td class="pid "><?php   echo($solution->submit); ?></td>
         <td class="pid "><?php   echo($solution->score); ?></td>
-        <td class="pid "><?php   echo($solution->staged); ?></td>
+        <td class="pid "><?php   echo($solution->stage); ?></td>
         <td class="pid "><?php   echo($solution->during_time); ?></td>
         <td class="pid "><?php   echo($solution->defunct); ?></td>
 

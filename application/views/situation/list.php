@@ -11,10 +11,9 @@
     <tr>
         <th><?php echo(__('top_backend.user')); ?></th>
         <th><?php echo(__('data')); ?></th>
-        <th><?php echo(__('group')); ?></th>
-        <th><?php echo(__('submited')); ?></th>
+        <th><?php echo(__('submit')); ?></th>
         <th><?php echo(__('score')); ?></th>
-        <th><?php echo(__('staged')); ?></th>
+        <th><?php echo(__('stage')); ?></th>
         <th><?php echo(__('during_time')); ?></th>
         <th><?php echo(__('defunct')); ?></th>
 
@@ -29,10 +28,9 @@
 
         <td class="pid "><?php echo($problem->user_id); ?></td>
         <td class="ptitle"><?php echo($problem->date);?></td>
-        <td class="ptitle"><?php echo($problem->group_id); ?></td>
-        <td class="ptitle"><?php echo($problem->submited); ?></td>
+        <td class="ptitle"><?php echo($problem->submit); ?></td>
         <td class="ptitle"><?php echo($problem->score); ?></td>
-        <td class="ptitle"><?php echo($problem->staged); ?></td>
+        <td class="ptitle"><?php echo($problem->stage); ?></td>
         <td class="ptitle"><?php $arr = (json_decode($problem->during_time));
 
         for($i=0; $i<count($arr); $i++)

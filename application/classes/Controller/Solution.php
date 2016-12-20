@@ -7,15 +7,13 @@
 
 class Controller_Solution extends Controller_Base
 {
-
-
-    
     public function before()
     {
         parent::before();
 
         $this->current_user = $this->check_login();
     }
+
     public function action_source()
     {
         $user = $this->check_login();
@@ -55,7 +53,6 @@ class Controller_Solution extends Controller_Base
             'contest_id' => $cid,
             'language' => $language,
             'result' => $result,
-            'group_id' => $user['group_id'],
         );
 
         $filter = $this->clear_data($filter,  array(-1, '', null));
@@ -63,10 +60,10 @@ class Controller_Solution extends Controller_Base
         $orderby = array(
             Model_Solution::$primary_key => Model_Base::ORDER_DESC
         );
+        $group_id = ($user->is_admin()||$user->is_leader()) ? NULL : $user->group_id;
+        $status = Model_Solution::find($filter, $page, $per_page, $orderby, $group_id);
 
-        $status = Model_Solution::find($filter, $page, $per_page, $orderby);
-
-        $total = Model_Solution::count($filter);
+        $total = Model_Solution::count($filter,$group_id);
 
         // view
         $this->template_data['title'] = __('solution.status.status');

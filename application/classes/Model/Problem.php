@@ -146,6 +146,16 @@ class Model_Problem extends Model_Base
     }
 
     /**
+     * default filter, with default
+     *
+     * @return Model_Problem[]
+     */
+    public static function find_problem_by_level($level){
+        $filter = self::default_filter();
+        $filter['level'] = $level;
+        return Model_Problem::find($filter, null, null, array());
+    }
+    /**
      * @param Model_User $user
      *
      * @return bool
@@ -190,6 +200,7 @@ class Model_Problem extends Model_Base
         $data_dir =  Model_Option::get_option('data_dir');
         return $data_dir. '/'. $this->problem_id;
     }
+
     public function in_data_files()
     {
         $files = array();

@@ -1,5 +1,6 @@
 <?php defined('SYSPATH') OR die('No direct script access.'); ?>
 
+<<<<<<< HEAD
 2016-12-07 07:27:29 --- EMERGENCY: Session_Exception [ 1 ]: Error reading session data. ~ SYSPATH/classes/Kohana/Session.php [ 324 ] in /home/OnlineJudge/system/classes/Kohana/Session.php:125
 2016-12-07 07:27:29 --- DEBUG: #0 /home/OnlineJudge/system/classes/Kohana/Session.php(125): Kohana_Session->read(NULL)
 #1 /home/OnlineJudge/modules/database/classes/Kohana/Session/Database.php(74): Kohana_Session->__construct(Array, NULL)
@@ -321,3 +322,16 @@
 #12 /home/OnlineJudge/system/classes/Kohana/Request.php(995): Kohana_Request_Client->execute(Object(Request))
 #13 /home/OnlineJudge/index.php(103): Kohana_Request->execute()
 #14 {main} in /home/OnlineJudge/system/classes/Kohana/Session.php:125
+=======
+2016-12-07 23:53:16 --- EMERGENCY: View_Exception [ 0 ]: The requested view admin/index/list could not be found ~ SYSPATH/classes/Kohana/View.php [ 265 ] in /Users/Desmond/Sites/judge/system/classes/Kohana/View.php:145
+2016-12-07 23:53:16 --- DEBUG: #0 /Users/Desmond/Sites/judge/system/classes/Kohana/View.php(145): Kohana_View->set_filename('admin/index/lis...')
+#1 /Users/Desmond/Sites/judge/system/classes/Kohana/View.php(30): Kohana_View->__construct('admin/index/lis...', Array)
+#2 /Users/Desmond/Sites/judge/application/classes/Controller/Base.php(119): Kohana_View::factory('admin/index/lis...', Array)
+#3 /Users/Desmond/Sites/judge/application/classes/Controller/Base.php(277): Controller_Base->after()
+#4 [internal function]: Controller_Base->execute()
+#5 /Users/Desmond/Sites/judge/system/classes/Kohana/Request/Client/Internal.php(97): ReflectionMethod->invoke(Object(Controller_Admin_Index))
+#6 /Users/Desmond/Sites/judge/system/classes/Kohana/Request/Client.php(114): Kohana_Request_Client_Internal->execute_request(Object(Request), Object(Response))
+#7 /Users/Desmond/Sites/judge/system/classes/Kohana/Request.php(995): Kohana_Request_Client->execute(Object(Request))
+#8 /Users/Desmond/Sites/judge/index.php(103): Kohana_Request->execute()
+#9 {main} in /Users/Desmond/Sites/judge/system/classes/Kohana/View.php:145
+>>>>>>> development

@@ -612,10 +612,45 @@ void update_solution(int solution_id, int result, int time, int memory, int sim,
 		_update_solution_http(solution_id, result, time, memory, sim, sim_s_id,
 				pass_rate);
 	} else {
+		printf("update_solution...\n");
 		_update_solution_mysql(solution_id, result, time, memory, sim, sim_s_id,
 				pass_rate);
 	}
 }
+
+void _update_accept_solution_http(char * user_id,int p_id){
+	const char * cmd =
+	" wget --post-data=\"update_accept_solution=1&user_id=%s&p_id=%d\" --load-cookies=cookie --save-cookies=cookie --keep-session-cookies -q -O - \"%s/admin/problem_judge.php\"";
+	FILE * fjobs = read_cmd_output(cmd, user_id, p_id, http_baseurl);
+	//fscanf(fjobs,"%d",&ret);
+	pclose(fjobs);
+}
+
+/* write result back to database */
+void _update_accept_solution_mysql(char * user_id,int p_id){
+	char sql[BUFFER_SIZE];
+	sprintf(sql,
+		"insert into temp_accept(user_id,problem_id) values(\'%s\',%d)",
+		user_id, p_id);
+        //printf("sql= %s\n",sql);
+	if (mysql_real_query(conn, sql, strlen(sql))) {
+	}
+}
+
+/*Desmond
+ * * record problems which are accepted
+ * **/
+void update_accept_solution(char * user_id,int p_id, int result){
+	if (result == OJ_AC)
+	{
+		if (http_judge) {
+			_update_accept_solution_http(user_id,p_id);
+		} else {
+			_update_accept_solution_mysql(user_id,p_id);
+		}
+	}
+}
+
 /* write compile error message back to database */
 void _addceinfo_mysql(int solution_id) {
 	char sql[(1 << 16)], *end;
@@ -2354,9 +2389,11 @@ int main(int argc, char** argv) {
 			pass_rate /= num_of_test;
 		update_solution(solution_id, finalACflg, usedtime, topmemory >> 10, sim,
 				sim_s_id, pass_rate);
+		update_accept_solution(user_id,p_id,finalACflg);
 	} else {
 		update_solution(solution_id, ACflg, usedtime, topmemory >> 10, sim,
 				sim_s_id, 0);
+		update_accept_solution(user_id,p_id,ACflg);
 	}
 	if ((oi_mode && finalACflg == OJ_WA) || ACflg == OJ_WA) {
 		if (DEBUG)

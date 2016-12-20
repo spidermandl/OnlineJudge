@@ -46,7 +46,6 @@ class Model_Solution extends Model_Base
         'solution_id',
         'problem_id',
         'user_id',
-        'group_id',
         'time',
         'memory',
         'in_date',
@@ -64,7 +63,6 @@ class Model_Solution extends Model_Base
     public $solution_id;
     public $problem_id;
     public $user_id;
-    public $group_id;
     public $time;
     public $memory;
     public $in_date;
@@ -148,7 +146,6 @@ class Model_Solution extends Model_Base
     {
         $solution = new Model_Solution();
         $solution->user_id = $user->user_id;
-        $solution->group_id = $user->group_id;
         $solution->problem_id = $problem->problem_id;
         $solution->language = $language;
         $solution->ip = Request::$client_ip;
@@ -212,6 +209,17 @@ class Model_Solution extends Model_Base
         return $result['total'];
     }
 
+    public static function number_of_solution_accept_for_user_and_problem($user_id,$problem_id)
+    {
+        $query = DB::select(DB::expr('count(solution_id) as total'))->from(self::$table)
+            ->where('user_id', '=', $user_id)
+            ->where('problem_id','=',$problem_id)
+            ->where('result', '=', self::STATUS_AC);
+
+        $result = $query->execute()->current();
+        return $result['total'];
+    }
+
     public static function number_of_solution_failed_for_user($user_id)
     {
         $query = DB::select(DB::expr('count(solution_id) as total'))->from(self::$table)
@@ -221,6 +229,68 @@ class Model_Solution extends Model_Base
         $result = $query->execute()->current();
 
         return $result['total'];
+    }
+
+    /**
+     * 获取指定一天里提交的题目
+     * @param day 指定天
+     * @param day 页数
+     * @param day 每页数量
+     */
+    public static function get_daily_committed_problem($day,$user_id){
+        $query = DB::select()->from(self::$table)
+            ->where('in_date', '>=', date("Y-m-d 00:00:00",strtotime("$day")))
+            ->where('in_date', '<', date("Y-m-d 00:00:00",strtotime("$day +1 day")))
+            ->where('user_id','=',$user_id);
+        $result = $query->as_object(get_called_class())->execute();
+        return $result->as_array();
+    }
+
+    /**
+     * 分页获取指定一天里提交通过的题目
+     * @param day 指定天
+     * @param page 页数
+     * @param page_limit 每页数量上限
+     */
+    public static function get_daily_accepted_problem($day,$page=1,$page_limit=50){
+        $query = DB::select()->from(self::$table)
+            ->where('result','=',self::STATUS_AC)
+            ->where('in_date', '>=', date("Y-m-d 00:00:00",strtotime("$day")))
+            ->where('in_date', '<', date("Y-m-d 00:00:00",strtotime("$day +1 day")))
+            ->order_by('in_date',Model_Base::ORDER_ASC)
+            ->limit($page_limit);
+        $query->offset( $page_limit * ($page - 1));
+        $result = $query->as_object(get_called_class())->execute();
+        return $result->as_array();
+    }
+
+    /**
+     * 获取第一条做题提交的时间
+     */
+    public static function get_first_day_commit(){
+        $order_by = array('in_date' => Model_Base::ORDER_ASC );
+        $first = Model_Solution::find(array(),NULL,1,$order_by);
+        if (count($first) == 0) {
+            return NULL;
+        }
+        return $first[0]->in_date;
+    }
+
+    /**
+    * 判断该题之前是否正确提交过
+    * @param solution 页数
+    */
+    public static function is_problem_accepted_before_day($solution){
+        $query = DB::select()->from(self::$table)
+            ->where('in_date', '<', $solution->in_date)
+            ->where('problem_id', '=', $solution->problem_id)
+            ->where('user_id', '=', $solution->user_id)
+            ->where('result','=',self::STATUS_AC)
+            ->limit(1);
+        $result = $query->as_object(get_called_class())->execute();
+        if (count($result)>0)
+            return true;
+        return false;
     }
 
 
@@ -252,7 +322,7 @@ class Model_Solution extends Model_Base
         {
             $user = Model_User::find_by_id($user);
         }
-//        if ( $user->user_id == $this->user_id ) return true;
+        //if ( $user->user_id == $this->user_id ) return true;
         if ( $user->can_view_code($this) ) return true;
 
         return false;
@@ -278,43 +348,39 @@ class Model_Solution extends Model_Base
     public static function solution_by_rank($current_group,$problem_id, $page=0, $limit=50)
     {
         $start = $page * $limit;
-
-
-       if (!$current_group) {
-          $sql = 'SELECT solution_id, problem_id, count(*) AS att, user_id, language, memory, time, min(10000000000000000000 + time * 100000000000 + memory * 100000 + code_length) AS score, in_date
-                FROM solution
+        if (!$current_group) {
+            $sql = 'SELECT solution_id, problem_id, count(*) AS att, user_id, language, memory, time, min(10000000000000000000 + time * 100000000000 + memory * 100000 + code_length) AS score, in_date
+                FROM solution 
                 WHERE result = :status
                 AND problem_id = :problem_id
                 GROUP BY solution_id,user_id
                 ORDER BY score, in_date
                 LIMIT :start, :limit';
-                $query = DB::query(Database::SELECT, $sql)
+            $query = DB::query(Database::SELECT, $sql)
             ->param(':status', self::STATUS_AC)
             ->param(':problem_id', $problem_id)
             ->param(':start', $start)
             ->param(':limit', $limit);
-       }else{
-         $sql = 'SELECT solution_id, problem_id, count(*) AS att, user_id, language, memory, time, min(10000000000000000000 + time * 100000000000 + memory * 100000 + code_length) AS score, in_date
+        }
+        else{
+            $sql = 'SELECT solution_id, problem_id, count(*) AS att, user_id, language, memory, time, min(10000000000000000000 + time * 100000000000 + memory * 100000 + code_length) AS score, in_date
                 FROM solution
+                JOIN users ON users.user_id = solution.user_id
                 WHERE result = :status
                 AND problem_id = :problem_id
-                AND group_id = :group_id
-                GROUP BY solution_id,user_id
+                AND users.group_id = :group_id
+                GROUP BY solution_id,solution.user_id
                 ORDER BY score, in_date
                 LIMIT :start, :limit';
-                $query = DB::query(Database::SELECT, $sql)
+            $query = DB::query(Database::SELECT, $sql)
             ->param(':status', self::STATUS_AC)
             ->param(':problem_id', $problem_id)
             ->param(':group_id', $current_group)
             ->param(':start', $start)
             ->param(':limit', $limit);
-       }
-
-
-
+        }
 
         $result = $query->execute();
-
         return $result->as_array();
     }
 
@@ -436,4 +502,69 @@ class Model_Solution extends Model_Base
 
         return $result->as_array();
     }
+
+
+     /**
+     *
+     * 通过简单的过滤器查找数据
+     *
+     * @param array $filters
+     * @param int   $page
+     * @param int   $limit
+     * @param array $orderby
+     *
+     * @return Model_Base[]|Model_Code[]|Model_Problem[]|Model_User[]|Model_Topic[]
+     */
+    public static function find($filters, $page = 1, $limit = 50, $orderby=array(),$group_id=NULL)
+    {
+        $query = DB::select()->from(static::$table);
+        if($group_id){
+            $query->join(Model_User::$table)->on(self::$table.'.user_id' , '=' , Model_User::$table.'.user_id')
+                ->where(Model_User::$table.'.group_id','=',$group_id);
+        }
+        foreach($filters as $col => $value)
+        {
+            $query->where($col, '=', $value);
+        }
+        if ( $limit ) $query->limit($limit);
+        if ( $page ) $query->offset( $limit * ($page - 1));
+
+        foreach($orderby as $col => $order)
+        {
+            $query->order_by($col,  $order);
+        }
+
+        $result = $query->as_object(get_called_class())->execute();
+
+        return $result->as_array();
+    }
+
+    /**
+     *
+     * 统计数目
+     * 主要注意的是innodb的count性能不如myisam
+     *
+     * @param array $filters
+     *
+     * @return int
+     */
+    public static function count($filters = array(),$group_id=NULL)
+    {
+        $query = DB::select(array(DB::expr('COUNT(*)'), 'total'))
+                   ->from(static::$table);
+        if($group_id){
+            $query->join(Model_User::$table)->on(self::$table.'.user_id' , '=' , Model_User::$table.'.user_id')
+                ->where(Model_User::$table.'.group_id','=',$group_id);
+        }
+        foreach($filters as $col => $value)
+        {
+            $query->where($col, '=', $value);
+        }
+
+        $result = $query->execute();
+        $item = $result->current();
+        return $item['total'];
+    }
+
+
 }

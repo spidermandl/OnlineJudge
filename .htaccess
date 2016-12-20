@@ -4,7 +4,7 @@ Options +FollowSymlinks
 RewriteEngine On
 
 # Installation directory
-#RewriteBase /~Desmond/judge/
+#RewriteBase /judge/
 RewriteBase /OnlineJudge/
 
 # Protect hidden files from being viewed

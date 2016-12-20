@@ -5,11 +5,6 @@ class Controller_Index extends Controller_Base
 
     public function action_index()
     {
-        //$session = Session::instance();
-        //$session->set("Desmond", '22');
-        //$data = $session->get("Desmond");
-
-
         $page = $this->get_query('page', 1);
         $number_of_news = 10;
 

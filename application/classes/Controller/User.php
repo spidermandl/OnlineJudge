@@ -110,14 +110,11 @@ class Controller_User extends Controller_Base
         $this->template_data['title'] = __('common.user_disabled_title');
     }
 
-    public function action_register()
+    public function action_register(){
 
-    {
-
-
-        if ( $this->request->is_post() and $this->check_captcha() )
-        {
+        if ( $this->request->is_post() and $this->check_captcha() ){
             // TODO: cleaned_post() caused password 'fo<ob>ar' problem
+            //验证注册信息输入格式
             $post = Validation::factory($this->cleaned_post())
                               ->rule('username', 'not_empty')
                               ->rule('username', 'min_length', array(':value', 4))
@@ -133,83 +130,38 @@ class Controller_User extends Controller_Base
                               ->rule('invitation', 'min_length', array(':value', 6))
                               ->rule('invitation', 'max_length', array(':value', 6));
 
-
             if ($post->check()) {
+                $user = Model_User::find_by_id($post['username']);
 
+                if (!$user){
+                    $invitation_code = 
+                        Model_InvitationCode::validateCode($post['invitation']);//验证邀请码
 
+                    if ($invitation_code!=null) {
+                        $user = new Model_User;
 
-                        $user = Model_User::find_by_id($post['username']);
+                        $user->update($post->data());
+                        $user->group_id = $invitation_code->group_id;
+                        $user->user_id = $post['username'];
+                        $user->update_password($post['password']);
+                        $user->save(true);
 
-                        if ( ! $user )
-                            {
-                            try {
-                                $mycache = new Memcache;
-                                $mycache ->connect('127.0.0.1',11211);
-                                $allcode = Model_InvitationCode::getMemcacheKeys($mycache);
-
-                                $user_group_id = null;
-                                $code_type = null;
-                                foreach ($allcode as $key) {
-                                    if(strpos($key,$post['invitation']) == true)
-                                    {
-                                        $mycache = new Memcache;
-                                        $mycache ->connect('127.0.0.1',11211);
-                                        $invitation = $mycache->get($key);
-                                        $user_group_id=$invitation['group_id'];
-                                        $code_type = $invitation['type'];
-                                      if ($invitation['num']==1) {
-                                            $mycache->delete($key);
-                                        }else{
-
-                                        //邀请码使用次数减一
-
-                                            $invitation["num"]=$invitation['num']-1;
-                                            $now = date('Y-m-d H:i:s');
-                                            $time = $invitation["time"]-(strtotime($now)- strtotime($invitation['cereatetime']));
-                                            $mycache->set($key,$invitation,0,$time);
-                                        }
-
-                                      break;
-                                    }
-                                }
-                              } catch (Exception $e) {
-
-                              }
-
-
-                        if ($user_group_id!=null) {
-
-
-                            $user = new Model_User;
-
-                            $user->update($post->data());
-                            $user->group_id = $user_group_id;
-                            $user->user_id = $post['username'];
-                            $user->update_password($post['password']);
-                            $user->save(true);
-
-
-                            if ($invitation['type']==2) {
-                                $privilege = new Model_Privilege;
-                                $privilege->user_id=$post['username'];
-                                $privilege->group_id=$user_group_id;
-                                $privilege->rightstr=Model_Privilege::PERM_LEADER;
-                                $privilege->save();
-
-                            }
-
-                            Auth::instance()->login($post['username'], $post['password'], true);
-                            $this->go_home();
-                        } else {
-                            $this->flash_error(array(__('common.code_not_found')));
+                        if ($invitation_code->type==2) {
+                            $privilege = new Model_Privilege;
+                            $privilege->user_id=$post['username'];
+                            $privilege->group_id=$invitation_code->group_id;
+                            $privilege->rightstr=Model_Privilege::PERM_LEADER;
+                            $privilege->save();
                         }
-                    }else{
-                         $this->flash_error(array(__('common.user_exist')));
 
-
+                        Auth::instance()->login($post['username'], $post['password'], true);
+                        $this->go_home();
+                    } else {
+                        $this->flash_error(array(__('common.code_not_found')));
                     }
-
-
+                }else{
+                    $this->flash_error(array(__('common.user_exist')));
+                }
             }
             $errors = $post->errors("User");
             $this->flash_error($errors);
@@ -218,8 +170,8 @@ class Controller_User extends Controller_Base
         $this->template_data['title'] = __('user.register.user_register');
     }
 
-    public function action_login()
-    {
+    public function action_login(){
+
         if ( $this->get_current_user() ) {
             $this->go_home();
         }
@@ -256,8 +208,7 @@ class Controller_User extends Controller_Base
             // if ($this->check_admin()) {
             //     $this->$this->redirect($url);
             // }
-
-
+            
             if ( ! $url )
             {
                $this->go_home();
@@ -268,13 +219,13 @@ class Controller_User extends Controller_Base
     }
 
 
-    protected function check_captcha()
-    {
+    protected function check_captcha(){
+
         $captcha_mode = Model_Option::get_option('captcha_mode', false);
         if ( $captcha_mode == false ) return true;
 
-        if ( $captcha_mode == 'recaptcha' )
-        {
+        if ( $captcha_mode == 'recaptcha' ){
+
             $private_key = Model_Option::get_option('captcha_private_key', false);
             $path = Kohana::find_file('vendor', 'recaptcha-php-1.11/recaptchalib');
             require_once $path;
@@ -293,8 +244,8 @@ class Controller_User extends Controller_Base
             $this->flash_error($resp->error);
             return false;
         }
-        if ( $captcha_mode == 'local')
-        {
+        if ( $captcha_mode == 'local'){
+
             $challenge = Arr::get($_POST, 'code', false);
             $code = Session::instance()->get('captcha');
 

@@ -1,95 +1,144 @@
-<?php defined('SYSPATH') OR die('No direct access allowed.');
+<?php
 
 
 /**
  * @author: freefcw
+ * 邀请码数据表
  * Date: 12/28/13
  * Time: 2:17 PM
+
+ CREATE TABLE IF NOT EXISTS `invitation_code` (
+  `invitation_id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` varchar(48) NOT NULL,
+  `type` int(4) ,
+  `cap` int(11) ,
+  `creater_id` varchar(48) NOT NULL,
+  `create_time` datetime NOT NULL ,
+  `activated_num` int(11),
+  `expired_time` int(20) NOT NULL,
+  `code` varchar(20) NOT NULL,
+  `pending1` text CHARACTER SET utf8,
+  `pending2` text CHARACTER SET utf8,
+  `pending3` text CHARACTER SET utf8,
+   PRIMARY KEY (`invitation_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
  */
 
-class Model_InvitationCode extends Model_Base
-{
-    static $cols = array(
-        'id',
-        'group_id',
-        'invited_code',
-        'type',
-        'num',
-        'createtime',
+class Model_InvitationCode extends Model_Base{
 
+    static $cols = array(
+        'invitation_id',
+        'group_id',
+        'type',
+        'cap',
+        'creater_id',
+        'create_time',
+        'activated_num',
+        'expired_time',
+        'code',
     );
 
-    static $primary_key = 'id'; // NNNNNNNNNNO
+    static $primary_key = 'invitation_id'; //邀请码表主键
 
-    static $table = 'invitation';
+    static $table = 'invitation_code';
 
-    public $id;
+    public $invitation_id;
     public $group_id;
-    public $invited_code;
     public $type;
-    public $num;
-    public $createtime;
+    public $cap;
+    public $creater_id;
+    public $create_time;
+    public $activated_num;
+    public $expired_time;
+    public $code;
 
-
-
-    const MAIL_NEW  = 1;
-    const MAIL_READ = 0;
-/*
-anthod: zhang ze xiang
-function : generate invitation code
-date: 2016.10.31 13:02
- */
-public static function generateRandomString($length = 6) {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $charactersLength = strlen($characters);
-    $randomString = '';
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    /*
+     *anthod: zhang ze xiang
+     *function : 生成邀请码
+     *date: 2016.10.31 13:02
+     */
+    public function generate_invitation_code($length) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        if($length == null)
+            $length = 6;
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
-    return $randomString;
-}
 
     public static function get_Group_id($invitation)
     {
-
         $filter = array(
-            'invited_code' => $invitation,
+            'code' => $invitation,
         );
-
         $result = self::find($filter);
-
-        if ($result) return $result[0];
-
+        if ($result) 
+            return $result[0];
         return null;
     }
-    public static function invitation_del($invited_code){
+    
 
-         $query = DB::delete(self::$table)
-            ->where('invited_code', '=', $invited_code);
-        return $query->execute();
+    /**
+     * 获取用户生成过的邀请码
+    */
+    public static function get_user_code($user_id){
+        $query = DB::select('code')->from(static::$table)
+            ->where('creater_id', '=', $user_id);
 
+        $result = $query->execute();
+        return $result -> as_array();
+    }
+    
+    /**
+    * 验证邀请码
+    * 返回 Model_InvitationCode 对象
+    */
+    public static function validateCode($code){
+        $query = DB::select()
+            ->from(static::$table)
+            ->where('code', '=', $code);
+        $array = $query->as_object(get_called_class())->execute()->as_array();
+        if (count($array) == 0) //没有该注册码
+            return null;
+        $item = $array[0];
+        if ($item->expired_time < time()){ //注册码过期
+            $item->destroy();
+            return null;
+        }
+        $item->activated_num = $item->activated_num+1;
+        if ($item->activated_num == $item->cap) {//注册码达到使用上限
+            $item->destroy();
+        }else
+            $item->save();
+
+        return $item;
     }
 
-      public function save()
-    {
+    /**
+    * 保存邀请码
+    */
+    public function save(){
         // prepare data
 //        $this->data['update_at'] = PP::format_time();
 
-        // 过滤不存在的数据
+        //获取表结构数据元
         $data = $this->raw_array();
 
-        if ( isset($this->{static::$primary_key}) and $this->{static::$primary_key})
-        {
+        if ( isset($this->{static::$primary_key}) and $this->{static::$primary_key}){
             // if primary key exist, then update, contain primary key, haha
             $primary_id = $this->{static::$primary_key};
-            //            unset($this->data[static::$primary_key]);
+            //unset($this->data[static::$primary_key]);
 
             $query = DB::update(static::$table)->set($data)->where(static::$primary_key, '=', $primary_id);
             $ret   = $query->execute();
 
             return $ret;
-        } else
-        {
+
+        } else{
             // else save new record
             $keys   = array_keys($data);
             $values = array_values($data);
@@ -102,63 +151,29 @@ public static function generateRandomString($length = 6) {
         }
     }
 
-    protected function initial_data()
-    {
-       $this->new_mail = self::MAIL_NEW;
-       $this->in_date = e::format_time();
-       $this->reply = 0;
-       $this->defunct = self::DEFUNCT_NO;
+    protected function initial_data(){
+
     }
 
-    public function validate()
-    {}
+    public function validate(){
+    }
 
     /**
-     * @ param string $server
-     * @ param int $port
-     * @ param int $limit
-     * @ return array
-     */
-    public static function  getMemcacheKeys ($memcache, $limit = 10000)
-    {
-        $keysFound = array();
+    * 获取有效邀请码
+    */
+    public static function get_available_code($user_id){
+        /**
+        * 删除过期邀请码
+        */
+        $query = DB::delete(static::$table)
+            ->where('expired_time', '<', time())->execute();
 
-        // $options = $this->_options;
-        // $server = $options['servers'][0];
-        // $memcache = new Memcache;
-        // $memcache->connect($server, $port = 11211, 5);
+        $query = DB::select('code','group_id','cap','type','create_time')
+            ->from(static::$table)
+            ->where('creater_id', '=', $user_id);
+        $result = $query->as_object(get_called_class())->execute();
+        return $result->as_array();
 
-        $slabs = $memcache->getExtendedStats('slabs');
-        foreach ($slabs as $serverSlabs) {
-            foreach ($serverSlabs as $slabId => $slabMeta) {
-                try {
-                    $cacheDump = $memcache->getExtendedStats('cachedump', (int) $slabId, 1000);
-                } catch (Exception $e) {
-                    continue;
-                }
-
-                if (!is_array($cacheDump)) {
-                    continue;
-                }
-
-                foreach ($cacheDump as $dump) {
-
-                    if (!is_array($dump)) {
-                        continue;
-                    }
-
-                    foreach ($dump as $key => $value) {
-                        $keysFound[] = $key;
-
-                        if (count($keysFound) == $limit) {
-                            return $keysFound;
-                        }
-                    }
-                }
-            }
-        }
-
-        return $keysFound;
     }
 
 

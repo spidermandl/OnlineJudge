@@ -1,5 +1,6 @@
 <?php defined('SYSPATH') OR die('No direct script access.'); ?>
 
+<<<<<<< HEAD
 2016-12-11 08:13:24 --- EMERGENCY: Session_Exception [ 1 ]: Error reading session data. ~ SYSPATH/classes/Kohana/Session.php [ 324 ] in /home/OnlineJudge/system/classes/Kohana/Session.php:125
 2016-12-11 08:13:24 --- DEBUG: #0 /home/OnlineJudge/system/classes/Kohana/Session.php(125): Kohana_Session->read(NULL)
 #1 /home/OnlineJudge/modules/database/classes/Kohana/Session/Database.php(74): Kohana_Session->__construct(Array, NULL)
@@ -3387,3 +3388,32 @@
 #12 /home/OnlineJudge/system/classes/Kohana/Request.php(995): Kohana_Request_Client->execute(Object(Request))
 #13 /home/OnlineJudge/index.php(103): Kohana_Request->execute()
 #14 {main} in /home/OnlineJudge/system/classes/Kohana/Session.php:125
+=======
+2016-12-11 09:58:18 --- EMERGENCY: ErrorException [ 1 ]: Class 'ORM' not found ~ APPPATH/classes/Kohana/Cron.php [ 33 ] in file:line
+2016-12-11 09:58:18 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-11 09:59:40 --- EMERGENCY: ErrorException [ 1 ]: Class 'ORM' not found ~ APPPATH/classes/Kohana/Cron.php [ 33 ] in file:line
+2016-12-11 09:59:40 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-11 10:11:31 --- EMERGENCY: ErrorException [ 1 ]: Class 'ORM' not found ~ APPPATH/classes/Kohana/Cron.php [ 33 ] in file:line
+2016-12-11 10:11:31 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-11 10:41:19 --- EMERGENCY: ErrorException [ 1 ]: Call to undefined method Date::unix2mysql() ~ APPPATH/classes/Kohana/Cron.php [ 74 ] in file:line
+2016-12-11 10:41:19 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-11 10:41:47 --- EMERGENCY: ErrorException [ 1 ]: Call to undefined method Date::unix2mysql() ~ APPPATH/classes/Kohana/Cron.php [ 74 ] in file:line
+2016-12-11 10:41:47 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-11 15:59:23 --- EMERGENCY: ErrorException [ 4 ]: parse error ~ APPPATH/classes/Kohana/Cron.php [ 86 ] in file:line
+2016-12-11 15:59:23 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-11 15:59:35 --- EMERGENCY: ErrorException [ 4 ]: parse error ~ APPPATH/classes/Kohana/Cron.php [ 86 ] in file:line
+2016-12-11 15:59:35 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-11 16:01:24 --- EMERGENCY: ErrorException [ 4 ]: parse error ~ APPPATH/classes/Kohana/Cron.php [ 87 ] in file:line
+2016-12-11 16:01:24 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-11 16:01:29 --- EMERGENCY: ErrorException [ 4 ]: parse error ~ APPPATH/classes/Kohana/Cron.php [ 87 ] in file:line
+2016-12-11 16:01:29 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+>>>>>>> development

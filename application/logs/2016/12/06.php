@@ -1,5 +1,6 @@
 <?php defined('SYSPATH') OR die('No direct script access.'); ?>
 
+<<<<<<< HEAD
 2016-12-06 00:00:37 --- EMERGENCY: Session_Exception [ 1 ]: Error reading session data. ~ SYSPATH/classes/Kohana/Session.php [ 324 ] in /home/OnlineJudge/system/classes/Kohana/Session.php:125
 2016-12-06 00:00:37 --- DEBUG: #0 /home/OnlineJudge/system/classes/Kohana/Session.php(125): Kohana_Session->read(NULL)
 #1 /home/OnlineJudge/modules/database/classes/Kohana/Session/Database.php(74): Kohana_Session->__construct(Array, NULL)
@@ -1019,3 +1020,47 @@
 #12 /home/OnlineJudge/system/classes/Kohana/Request.php(995): Kohana_Request_Client->execute(Object(Request))
 #13 /home/OnlineJudge/index.php(103): Kohana_Request->execute()
 #14 {main} in /home/OnlineJudge/system/classes/Kohana/Session.php:125
+=======
+2016-12-06 00:09:38 --- EMERGENCY: ErrorException [ 1 ]: Class 'Memcache' not found ~ APPPATH/classes/Controller/Admin/Index.php [ 12 ] in file:line
+2016-12-06 00:09:38 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-06 00:36:41 --- EMERGENCY: ErrorException [ 1 ]: Class 'Memcache' not found ~ APPPATH/classes/Controller/Admin/Index.php [ 12 ] in file:line
+2016-12-06 00:36:41 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-06 01:15:18 --- EMERGENCY: ErrorException [ 1 ]: Class 'Memcache' not found ~ APPPATH/classes/Controller/Admin/Index.php [ 12 ] in file:line
+2016-12-06 01:15:18 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-06 01:18:11 --- EMERGENCY: ErrorException [ 1 ]: Class 'Memcache' not found ~ APPPATH/classes/Controller/Admin/Index.php [ 12 ] in file:line
+2016-12-06 01:18:11 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-06 01:18:14 --- EMERGENCY: ErrorException [ 1 ]: Class 'Memcache' not found ~ APPPATH/classes/Controller/Admin/Index.php [ 12 ] in file:line
+2016-12-06 01:18:14 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-06 01:30:58 --- EMERGENCY: ErrorException [ 1 ]: Class 'Memcache' not found ~ APPPATH/classes/Controller/Admin/Index.php [ 12 ] in file:line
+2016-12-06 01:30:58 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-06 01:39:38 --- EMERGENCY: ErrorException [ 1 ]: Class 'Memcache' not found ~ APPPATH/classes/Controller/Admin/Index.php [ 12 ] in file:line
+2016-12-06 01:39:38 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-06 01:42:38 --- EMERGENCY: ErrorException [ 1 ]: Class 'Memcache' not found ~ APPPATH/classes/Controller/Admin/Index.php [ 12 ] in file:line
+2016-12-06 01:42:38 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-06 01:42:39 --- EMERGENCY: ErrorException [ 1 ]: Class 'Memcache' not found ~ APPPATH/classes/Controller/Admin/Index.php [ 12 ] in file:line
+2016-12-06 01:42:39 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-06 01:43:18 --- EMERGENCY: ErrorException [ 1 ]: Class 'Memcache' not found ~ APPPATH/classes/Controller/Admin/Index.php [ 12 ] in file:line
+2016-12-06 01:43:18 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-06 01:43:22 --- EMERGENCY: ErrorException [ 1 ]: Class 'Memcache' not found ~ APPPATH/classes/Controller/Admin/Index.php [ 12 ] in file:line
+2016-12-06 01:43:22 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-06 01:43:26 --- EMERGENCY: ErrorException [ 1 ]: Class 'Memcache' not found ~ APPPATH/classes/Controller/Admin/Index.php [ 12 ] in file:line
+2016-12-06 01:43:26 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-06 01:47:52 --- EMERGENCY: ErrorException [ 1 ]: Class 'Memcache' not found ~ APPPATH/classes/Controller/Admin/Index.php [ 12 ] in file:line
+2016-12-06 01:47:52 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-06 01:52:47 --- EMERGENCY: ErrorException [ 1 ]: Class 'Memcache' not found ~ APPPATH/classes/Controller/Admin/Index.php [ 12 ] in file:line
+2016-12-06 01:52:47 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+>>>>>>> development

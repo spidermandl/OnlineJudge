@@ -600,3 +600,9 @@
 #9 /home/OnlineJudge/system/classes/Kohana/Request.php(995): Kohana_Request_Client->execute(Object(Request))
 #10 /home/OnlineJudge/index.php(103): Kohana_Request->execute()
 #11 {main} in /home/OnlineJudge/modules/database/classes/Kohana/Database/Query.php:251
+2016-12-19 23:30:53 --- EMERGENCY: ErrorException [ 1 ]: Class 'Cron' not found ~ APPPATH/cron.php [ 29 ] in file:line
+2016-12-19 23:30:53 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line
+2016-12-19 23:37:30 --- EMERGENCY: ErrorException [ 1 ]: Class 'Cron' not found ~ APPPATH/cron.php [ 29 ] in file:line
+2016-12-19 23:37:30 --- DEBUG: #0 [internal function]: Kohana_Core::shutdown_handler()
+#1 {main} in file:line

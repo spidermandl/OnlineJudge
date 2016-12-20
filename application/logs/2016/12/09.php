@@ -1,5 +1,6 @@
 <?php defined('SYSPATH') OR die('No direct script access.'); ?>
 
+<<<<<<< HEAD
 2016-12-09 12:35:49 --- EMERGENCY: Session_Exception [ 1 ]: Error reading session data. ~ SYSPATH/classes/Kohana/Session.php [ 324 ] in /home/OnlineJudge/system/classes/Kohana/Session.php:125
 2016-12-09 12:35:49 --- DEBUG: #0 /home/OnlineJudge/system/classes/Kohana/Session.php(125): Kohana_Session->read(NULL)
 #1 /home/OnlineJudge/modules/database/classes/Kohana/Session/Database.php(74): Kohana_Session->__construct(Array, NULL)
@@ -1125,3 +1126,14 @@
 #12 /home/OnlineJudge/system/classes/Kohana/Request.php(995): Kohana_Request_Client->execute(Object(Request))
 #13 /home/OnlineJudge/index.php(103): Kohana_Request->execute()
 #14 {main} in /home/OnlineJudge/system/classes/Kohana/Session.php:125
+=======
+2016-12-09 14:19:30 --- EMERGENCY: ErrorException [ 8 ]: Undefined variable: invitation ~ APPPATH/classes/Controller/User.php [ 180 ] in /Users/Desmond/Sites/judge/application/classes/Controller/User.php:180
+2016-12-09 14:19:30 --- DEBUG: #0 /Users/Desmond/Sites/judge/application/classes/Controller/User.php(180): Kohana_Core::error_handler(8, 'Undefined varia...', '/Users/Desmond/...', 180, Array)
+#1 /Users/Desmond/Sites/judge/application/classes/Controller/Base.php(271): Controller_User->action_register()
+#2 [internal function]: Controller_Base->execute()
+#3 /Users/Desmond/Sites/judge/system/classes/Kohana/Request/Client/Internal.php(97): ReflectionMethod->invoke(Object(Controller_User))
+#4 /Users/Desmond/Sites/judge/system/classes/Kohana/Request/Client.php(114): Kohana_Request_Client_Internal->execute_request(Object(Request), Object(Response))
+#5 /Users/Desmond/Sites/judge/system/classes/Kohana/Request.php(995): Kohana_Request_Client->execute(Object(Request))
+#6 /Users/Desmond/Sites/judge/index.php(103): Kohana_Request->execute()
+#7 {main} in /Users/Desmond/Sites/judge/application/classes/Controller/User.php:180
+>>>>>>> development

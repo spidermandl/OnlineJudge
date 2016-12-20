@@ -1,11 +1,6 @@
-<? php
+<?php
 
-  $user_id_array=array("zhang","wang");
-  $user_id_date = array('' => array() );
-
-  echo "string";
-
-
+  require 'application/cron.php';
    // foreach ($result as $each_line) {
 
    //          foreach ($user_id_array as $key) {

@@ -91,8 +91,8 @@
                         var tr = '<tr>'+
                                  '<td>'+value_j.code+'</td>'+
                                  '<td>'+value_j.group_id+'</td>'+
-                                 '<td>'+value_j.num+'</td>'+
-                                 '<td>'+value_j.cereatetime+'</td>'+
+                                 '<td>'+value_j.cap+'</td>'+
+                                 '<td>'+value_j.create_time+'</td>'+
                                  '</tr>';
                         $(href).find('tbody').append(tr);
                     });
