@@ -53,20 +53,7 @@
 
 4、php -f /project-dir/application/cron.php  执行定时任务
 
-5、update columns of users_problem
-	CREATE TABLE `user_progress` (
-	  `progress_id` int(11) NOT NULL AUTO_INCREMENT,
-	  `user_id` varchar(48) NOT NULL,
-	  `stage` int(4) DEFAULT NULL,
-	  `date` datetime NOT NULL,
-	  `submit` int(11) DEFAULT NULL,
-	  `score` int(11) NOT NULL,
-	  `during_time` text,
-	  `pending1` text,
-	  `pending2` text,
-	  `pending3` text,
-	  PRIMARY KEY (`progress_id`)
-	) ENGINE=MyISAM DEFAULT CHARSET=utf8
+5、drop table users_status;
 
 6、update columns of user_status and change table name to user_progress
 	CREATE TABLE `user_progress` (

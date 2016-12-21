@@ -1,3 +1,8 @@
 1、所有题目data在工程目录下，部署时在项目目录外新建一个ln文件，link到工程data目录
 2、执行判题系统命令 ./judged /data-directory
 3、.htaccess 中的 RewriteBase 与 base.php中的 base_url 要相同
+4、数据库:judge, 用户:root, 密码:desmond
+5、执行定时任务crontab配置 * * * * * php -f /home/OnlineJudge/application/cron.php >> /home/OnlineJudge/crontab_log.txt
+6、安装crontab:
+	yum install vixie-cron
+	yum install crontabs

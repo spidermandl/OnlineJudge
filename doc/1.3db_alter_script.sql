@@ -30,21 +30,7 @@ insert into `crontab` ( `name`, `period`, `callback`, `params`, `description`, `
 
 insert into `crontab` ( `name`, `period`, `callback`, `params`, `description`, `date_created`, `date_started`, `date_finished`, `date_next`, `times_executed`, `output`, `running`, `active`) values ( 'progress_tracker', '* * * * *', 'Task_DataTracker::init_all_user_progress', null, null, '2016-12-15 01:24:29', '2016-12-12 14:20:27', '2016-12-12 14:20:27', '2016-12-12 14:21:00', null, null, '0', '1');
 
-CREATE TABLE `invitation_code` (
-	`invitation_id` int(11) NOT NULL AUTO_INCREMENT,
-	`group_id` varchar(48) NOT NULL,
-	`type` int(4) DEFAULT NULL,
-	`cap` int(11) DEFAULT NULL,
-	`creater_id` varchar(48) NOT NULL,
-	`create_time` datetime NOT NULL,
-	`activated_num` int(11) DEFAULT NULL,
-	`expired_time` int(20) NOT NULL,
-	`code` varchar(20) NOT NULL,
-	`pending1` text,
-	`pending2` text,
-	`pending3` text,
-	PRIMARY KEY (`invitation_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+drop table users_status;
 
 CREATE TABLE `user_progress` (
 	`progress_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -60,17 +46,17 @@ CREATE TABLE `user_progress` (
 	PRIMARY KEY (`progress_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `user_progress` (
-	`progress_id` int(11) NOT NULL AUTO_INCREMENT,
-	`user_id` varchar(48) NOT NULL,
-	`stage` int(4) DEFAULT NULL,
-	`date` datetime NOT NULL,
-	`submit` int(11) DEFAULT NULL,
-	`score` int(11) NOT NULL,
-	`during_time` text,
-	`pending1` text,
-	`pending2` text,
-	`pending3` text,
-	PRIMARY KEY (`progress_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 ALTER TABLE solution DROP COLUMN group_id;
+
+DROP TABLE users_problem;
+CREATE TABLE `users_problem` (
+  `user_problem_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(48) NOT NULL,
+  `stage` int(4) DEFAULT NULL,
+  `problem_set` text,
+  `pending1` text,
+  `pending2` text,
+  `pending3` text,
+  PRIMARY KEY (`user_problem_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+

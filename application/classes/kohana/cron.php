@@ -66,7 +66,6 @@ class Kohana_Cron extends ORM {
 	public static function run()
 	{
         $time_start = microtime(true);
-var_dump($time_start);
 		//get active crons and due to execute now or next execute is NULL
         $crontab = new Cron();
         $crontab = $crontab->where('active','=',1)

@@ -2,7 +2,6 @@ web搭建注意事项：
 安装软件
 yum install php httpd php-mysql mysql-server php-xml php-gd gcc-c++ php-mbstring glibc mysql-devel glibc-devel glibc-static httpd-devel php-mysqli
 
-
 config
     --base.php ------------- 设置base_url,web工程在服务器的根路径
     --url ------------加入服务器ip地址为trusted host

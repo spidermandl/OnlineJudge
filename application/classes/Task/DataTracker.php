@@ -53,7 +53,7 @@ class Task_DataTracker {
                     if (isset($problem)==false){//题id已经无效
                         continue;
                     }
-                    if (!array_key_exists($p->group_id,$config_cache)) {//加入缓存
+                    if (!array_key_exists($user->group_id,$config_cache)) {//加入缓存
                         $config_cache[$user->group_id] = Model_GroupConfig::find_by_id($user->group_id);
                     }
                     $config = $config_cache[$user->group_id];
