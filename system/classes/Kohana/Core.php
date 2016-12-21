@@ -504,7 +504,6 @@ class Kohana_Core {
 		}
 
 		$file .= str_replace('_', DIRECTORY_SEPARATOR, $class);
-
 		if ($path = Kohana::find_file($directory, $file))
 		{
 			// Load the class file

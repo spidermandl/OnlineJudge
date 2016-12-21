@@ -79,14 +79,25 @@ class Controller_Problem extends Controller_Base
         }
         $created_problems = Model_UsersProblem::find_current_all_problem_id($user->user_id);//所有已经产生的题
         $all_ids = array_diff($all_ids , $created_problems);//取出所有没有生成过的题
-
         try{
             $group_config = Model_GroupConfig::find_by_id($user->group_id);
             $show_num = json_decode($group_config->show_num,true);
-            //var_dump($all_ids);
             //随出n个题
             $random_index = array_rand($all_ids,$show_num[$user->stage]);//取出value的差集
-            $all_ids = array_intersect_key($all_ids,$random_index);//取出key的交集
+            $result = array();//取出选出的题id
+            foreach ($random_index as $key => $value) {
+                array_push($result, $all_ids[$value]);
+            }
+
+            array_multisort($result);
+
+            $users_problem = new Model_UsersProblem;
+            $users_problem->user_id = $user->user_id;
+            $users_problem->problem_set = json_encode($result);
+            $users_problem->stage = $user->stage;
+            $users_problem->save();
+
+            return true;
 
         }catch(Exception $e){
             $this->flash_error(__('user.profile.no_enough_problem'));
@@ -94,106 +105,9 @@ class Controller_Problem extends Controller_Base
             return false;
         }
 
-        array_multisort($all_ids);
-        //var_dump($all_ids);
 
-        $users_problem = new Model_UsersProblem;
-        $users_problem->user_id = $user->user_id;
-        $users_problem->problem_set = json_encode($all_ids);
-        //var_dump($users_problem->problem_set);
-        $users_problem->stage = $user->stage;
-        $users_problem->save();
-
-        return true;
 
     }
-    /*
-    author : zhang zexiang
-    funtion : 随机生成下一阶段题目
-    date : 2016.11.6 22:50
-    */
-   // public function action_generate($current_problem_level,$current_show_num,$current_user, $current_user_group_config,$current_problem,$current_user_stage){
-
-   //      $all_leve_problem = Model_Problem::find_problem_by_level($current_problem_level);
-   //      $this->template_data['all_leve_problem'] = $all_leve_problem[0]['title'];
-
-   //      $num = count($all_leve_problem);
-
-   //      $stage_level = json_decode($current_user_group_config->stage_level,true);
-
-   //      $diff = array();
-
-   //      foreach ($stage_level as $key => $value) {
-   //          # code...
-   //          if($current_user_stage > $key)
-   //          {
-   //              if($value == $current_problem_level)
-   //              {
-   //                  $diff_tmp = array();
-   //                  $diff_tmp = Model_UsersProblem::find_problem_id_by_stage($current_user->user_id, $key);
-
-   //                  foreach ($diff_tmp as $key) {
-   //                      array_push($diff, $key['problem_id']);
-   //                  }
-   //              }
-   //          }
-   //      }
-
-
-   //      $current_problem_array = array();
-   //      foreach ($all_leve_problem as $key) {
-   //          # code...
-   //          array_push($current_problem_array, $key['problem_id']);
-
-   //      }
-
-
-   //      $left_level_problem = array_diff($current_problem_array,$diff);
-   //      $this->template_data['left_level_problem'] = $left_level_problem;
-
-
-
-   //      if($num < $current_show_num)    // if all this level problem number < need to show number
-   //      {
-   //          $this->flash_error(__('user.profile.no_enough_problem'));
-   //          $this->view = 'problem/userlist_insufficient';
-
-   //          return 0;
-
-
-   //      } else{
-   //              // $problemlist = Model_UsersProblem::UniqueRandomNumbersWithinRange(0,$num-1,$current_show_num);
-   //          try{
-   //              $problemlist = array_rand($left_level_problem,$current_show_num);
-   //          }catch(Exception $e){
-
-   //               $this->flash_error(__('user.profile.no_enough_problem'));
-   //               $this->view = 'problem/userlist_insufficient';
-   //               return 0;
-   //          }
-
-   //          array_multisort($problemlist);
-   //          // $this->template_data['num'] = $problemlist;
-   //      }
-
-   //      $problem_array = array();
-   //      $problem_id_array = array();
-
-   //      foreach ($problemlist as $key) {
-   //          # code...
-   //          array_push($problem_array, $all_leve_problem[$key]);
-   //          array_push($problem_id_array, $all_leve_problem[$key]);
-
-   //          $users_problem = new Model_UsersProblem;
-   //          $users_problem->user_id = $current_user->user_id;
-   //          $users_problem->problem_id = $all_leve_problem[$key]['problem_id'];
-   //          $users_problem->stage = $current_user_stage;
-
-   //          $users_problem->save();
-
-   //      }
-
-   // }
 
     /*
     author : zhang zexiang
@@ -221,17 +135,18 @@ class Controller_Problem extends Controller_Base
 
         //判断用户是否通过该阶段
         if($pass_numbers >=  $current_stage_pass_num){
-            $user->stage = ($user->stage < $group_config->stage_num) ? $user->stage : $user->stage+1;
+            $user->stage = ($user->stage < $group_config->stage_num) ? $user->stage+1 : $user->stage;
             $user->save();
 
             $stage_level = json_decode($group_config->stage_level,true); 
-            if($this->generate_problem_by_level($stage_level[$user->stage])==false)
-                return;
-            $this->list_stage_problem();
+            if($this->generate_problem_by_level($stage_level[$user->stage])==false){
+                $this->flash_error(__('user.profile.no_enough_problem',array()));
+            }
 
         }else{
             $this->flash_error(__('user.profile.cannot_pass',array(':pass'=>$pass_numbers,':total'=>$current_stage_pass_num)));
         }
+        $this->list_stage_problem();
     }
 
 

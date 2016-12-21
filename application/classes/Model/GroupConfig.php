@@ -34,7 +34,7 @@ class Model_GroupConfig extends Model_Base
     * 获取每个阶段需要完成的题数
     */
     public function min_pass_num_by_stage($stage){
-        $pass_config = json_decode($this->pass_num);
+        $pass_config = json_decode($this->pass_num,true);
         return $pass_config[$stage];
     }
 
