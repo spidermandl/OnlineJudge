@@ -49,7 +49,7 @@ class Controller_Solution extends Controller_Base
 
         $filter = array(
             'problem_id' => $pid,
-            'user_id' => $uid,
+            Model_Solution::$table.'.'.'user_id' => $uid,
             'contest_id' => $cid,
             'language' => $language,
             'result' => $result,

@@ -30,7 +30,8 @@ class Controller_Problem extends Controller_Base
 
         $stage = Arr::get($_GET,'stage');
         $stage = $stage == NULL ? $user->stage : $stage;
-        $this->template_data['stages'] = $user->stage;
+        $stage = $user->stage<$stage ? $user->stage : $stage;
+	$this->template_data['stages'] = $user->stage;
         $this->template_data['stage'] = $stage;
 
         $group_config = Model_GroupConfig::find_by_id($user->group_id);
@@ -136,7 +137,7 @@ class Controller_Problem extends Controller_Base
         //判断用户是否通过该阶段
         if($pass_numbers >=  $current_stage_pass_num){
             $user->stage = ($user->stage < $group_config->stage_num) ? $user->stage+1 : $user->stage;
-            $user->save();
+	    $user->save();
 
             $stage_level = json_decode($group_config->stage_level,true); 
             if($this->generate_problem_by_level($stage_level[$user->stage])==false){

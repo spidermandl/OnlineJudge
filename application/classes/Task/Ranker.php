@@ -14,7 +14,7 @@ class Task_Ranker {
 // SELECT * FROM `table_name` JOIN `table_2` ON `table_2`.`table_id` = `table_name`.`id`
         $ac_problems = Model_TempAC::find(array(),null,null,array());
         foreach ($ac_problems as $ac) {
-        	if(Model_Solution::number_of_solution_accept_for_user_and_problem($ac->user_id,$ac->problem_id)==0){
+        	if(Model_Solution::number_of_solution_accept_for_user_and_problem($ac->user_id,$ac->problem_id)==1){
 				$user = Model_User::find_by_username($ac->user_id);
 				$problem = Model_Problem::find_by_id($ac->problem_id);
 
